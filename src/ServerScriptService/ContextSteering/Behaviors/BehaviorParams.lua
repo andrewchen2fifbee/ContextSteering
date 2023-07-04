@@ -34,7 +34,6 @@ export type GenericParams = {
 	--[[
 	Interests will be returned in range [0, InterestMax]
 	]]
-	-- TODO may be worth readding InterestMin later
 	InterestMax: number, -- any number > 0
 
 	--[[
@@ -96,36 +95,35 @@ export type GenericParamsConstructorOverrides = {
 }
 
 function BehaviorParams.NewGenericParams(overrides: GenericParamsConstructorOverrides?): GenericParams
-	local overrides = (overrides or {}) :: GenericParamsConstructorOverrides
+	local _overrides = (overrides or {}) :: GenericParamsConstructorOverrides
 	
 	local params = {
-		DebugName = overrides.DebugName or "",
+		DebugName = _overrides.DebugName or "",
 		
-		Resolution = overrides.Resolution or BehaviorParams.DEFAULT_RESOLUTION,
+		Resolution = _overrides.Resolution or BehaviorParams.DEFAULT_RESOLUTION,
 		
-		RangeMin = overrides.RangeMin or 0,
-		RangeMax = overrides.RangeMax or 100,
+		RangeMin = _overrides.RangeMin or 0,
+		RangeMax = _overrides.RangeMax or 100,
 		
-		InterestMax = overrides.InterestMax or 1,
+		InterestMax = _overrides.InterestMax or 1,
 		
 		-- Falloff start/end ranges handled below: Defaults are derived from values in params
 		
-		InterestConeArcDegrees = overrides.InterestConeArcDegrees or 180,
+		InterestConeArcDegrees = _overrides.InterestConeArcDegrees or 180,
 		
-		DirectionModifierWeightForward = overrides.DirectionModifierWeightForward or 1,
-		DirectionModifierWeightRight = overrides.DirectionModifierWeightRight or 0,
+		DirectionModifierWeightForward = _overrides.DirectionModifierWeightForward or 1,
+		DirectionModifierWeightRight = _overrides.DirectionModifierWeightRight or 0,
 	}
 	
 	-- Potentially derived properties
-	params.DistanceFalloffStart = overrides.DistanceFalloffStart or params.RangeMin
-	params.DistanceFalloffEnd = overrides.DistanceFalloffEnd or params.RangeMax
+	params.DistanceFalloffStart = _overrides.DistanceFalloffStart or params.RangeMin
+	params.DistanceFalloffEnd = _overrides.DistanceFalloffEnd or params.RangeMax
 	
 	return params
 end
 
 -- Testing/debug: Verifies that params doesn't violate any constraints
 function BehaviorParams.VerifyGenericParams(params: GenericParams): (boolean, string?)
-	local valid = true
 	local errStart = "[ContextSteering] BehaviorParams verification failed: "
 	
 	if not (params.Resolution > 2) then

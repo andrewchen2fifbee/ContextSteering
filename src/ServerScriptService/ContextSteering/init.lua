@@ -15,8 +15,7 @@ This library is intended for movement on a horizontal plane.
 Obvious use case: Creating interesting NPC movement without PathfindingService. 
 	You can probably find other uses for context steering. 
 ]]
--- TODO port to Rojo: preparation for repository creation + future release
--- TODO add testing: integration (bottom-up), some unit
+-- TODO add testing: integration (bottom-up), some unit on critical components? look into this
 -- 			integration: BehaviorParams + InfoGetters -> Behaviors, Behaviors -> ContextSteering
 --			test intentionally breaking constraints to make sure it fails in a predictable way
 local ContextSteering = {}

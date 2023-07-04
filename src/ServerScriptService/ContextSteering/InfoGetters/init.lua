@@ -5,12 +5,17 @@ local Players = game:GetService("Players")
 local InfoTypes = require(script.InfoTypes)
 
 --[[ DESCRIPTION
-Gets information from the world, so behavior functions can use it to help make decisions
-TODO desc me
+Functions which get information from the world, so behavior functions can use that information to make decisions.
+If you want to get information from the workspace, this is the place to do it.
 ]]
 local InfoGetters = {}
 
--- Return CFrame for all players with (player.Character ~+ nil)
+--[[
+PARAMS
+	none
+RETURN
+	cframes <- table of CFrames for all players with (player.Character ~= nil)
+]]
 function InfoGetters.GetPlayerCFrames(): {CFrame}
 	local cframes: {CFrame} = {}
 	
@@ -24,7 +29,14 @@ function InfoGetters.GetPlayerCFrames(): {CFrame}
 	return cframes
 end
 
--- Generic tagged-thing infogetter, supporting PVInstance (BasePart, Model) and Attachment types
+--[[
+PARAMS
+	tag <- string ContextService tag for which you want tagged Instance CFrames
+RETURN
+	cframes <- table of CFrames for all supported types of tagged Instance
+NOTES
+	Supported types: PVInstance (BasePart, Model), Attachment
+]]
 function InfoGetters.GetTaggedCFrames(tag: string): {CFrame}
 	local cframes: {CFrame} = {}
 	
@@ -41,6 +53,16 @@ function InfoGetters.GetTaggedCFrames(tag: string): {CFrame}
 	return cframes
 end
 
+--[[
+PARAMS
+	npcCFrame <- CFrame to get random points around
+	numPoints <- how many random points to get
+	minDistance <- random points are at least this far away, in studs
+	maxDistance <- random points are at most this far away, in studs
+RETURN
+	cframes <- table of randomly placed nearby CFrames, on the same horizontal plane that npcCFrame is on
+		(npcCFrame.Position.Y = randomCFrame.Position.Y)
+]]
 function InfoGetters.GetRandomCFramesNearby(npcCFrame: CFrame, numPoints: number, minDistance: number, maxDistance: number): {CFrame}
 	local cframes: {CFrame} = {}
 	
@@ -57,10 +79,15 @@ function InfoGetters.GetRandomCFramesNearby(npcCFrame: CFrame, numPoints: number
 	return cframes
 end
 
--- Return CFrameAndVelocity for all players with (player.Character ~+ nil and player.Character.PrimaryPart ~= nil)
--- Make sure characters have PrimaryPart set!
+--[[
+PARAMS
+	none
+RETURN
+	cframesAndVelocities <- table of CFrameAndVelocitys for all players with 
+		(player.Character ~= nil and player.Character.PrimaryPart ~= nil)
+]]
 function InfoGetters.GetPlayerCFramesAndVelocities(): {InfoTypes.CFrameAndVelocity}
-	local cframesandvelocities: {InfoTypes.CFrameAndVelocity} = {}
+	local cframesAndVelocities: {InfoTypes.CFrameAndVelocity} = {}
 	
 	for _, player in Players:GetPlayers() do
 		local character = player.Character
@@ -71,18 +98,26 @@ function InfoGetters.GetPlayerCFramesAndVelocities(): {InfoTypes.CFrameAndVeloci
 				CFrame = character:GetPivot(),
 				Velocity = character.PrimaryPart.AssemblyLinearVelocity
 			}
-			table.insert(cframesandvelocities, cframeAndVelocity)
+			table.insert(cframesAndVelocities, cframeAndVelocity)
 		end
 	end
 	
-	return cframesandvelocities
+	return cframesAndVelocities
 end
 
--- Generic tagged-thing infogetter, supporting BasePart, Model (sometimes), and Attachment (sometimes) types
--- Make sure Models have PrimaryPart set!
--- Make sure Attachments are parented to a supported type (BasePart, Model w/ PrimaryPart)!
+--[[
+PARAMS
+	tag <- string ContextService tag for which you want tagged Instance CFrameAndVelocitys
+RETURN
+	cframesAndVelocities <- table of CFrameAndVelocitys for all supported types of tagged Instance
+NOTES
+	Supported types: 
+		BasePart, 
+		Model (requires Model.PrimaryPart ~= nil), 
+		Attachment (requires Attachment.Parent:IsA("BasePart") or Attachment.Parent:IsA("Model"))
+]]
 function InfoGetters.GetTaggedCFramesAndVelocities(tag: string): {InfoTypes.CFrameAndVelocity}
-	local cframesandvelocities: {InfoTypes.CFrameAndVelocity} = {}
+	local cframesAndVelocities: {InfoTypes.CFrameAndVelocity} = {}
 	
 	for _, thing in CollectionService:GetTagged(tag) do
 		if thing:IsA("Model") then
@@ -93,13 +128,13 @@ function InfoGetters.GetTaggedCFramesAndVelocities(tag: string): {InfoTypes.CFra
 				CFrame = thing:GetPivot(),
 				Velocity = thing.PrimaryPart.AssemblyLinearVelocity
 			}
-			table.insert(cframesandvelocities, cframeAndVelocity)
+			table.insert(cframesAndVelocities, cframeAndVelocity)
 		elseif thing:IsA("BasePart") then
 			local cframeAndVelocity: InfoTypes.CFrameAndVelocity = {
 				CFrame = thing:GetPivot(),
 				Velocity = thing.AssemblyLinearVelocity
 			}
-			table.insert(cframesandvelocities, cframeAndVelocity)
+			table.insert(cframesAndVelocities, cframeAndVelocity)
 		elseif thing:IsA("Attachment") then
 			local parentIsBasePart = thing.Parent and thing.Parent:IsA("BasePart")
 			local parentIsValidModel = thing.Parent and thing.Parent:IsA("Model") and thing.Parent.PrimaryPart
@@ -112,30 +147,20 @@ function InfoGetters.GetTaggedCFramesAndVelocities(tag: string): {InfoTypes.CFra
 				CFrame = thing.Parent:GetPivot(),
 				Velocity = velocitySource.AssemblyLinearVelocity
 			}
-			table.insert(cframesandvelocities, cframeAndVelocity)
+			table.insert(cframesAndVelocities, cframeAndVelocity)
 		else
 			warn(`[ContextSteering] GetTaggedCFramesAndVelocities does not support tagged objects of type {thing.ClassName}! Skipping...`)
 		end
 	end
 
-	return cframesandvelocities
+	return cframesAndVelocities
 end
 
--- TODO pursuit/evade future position infogetter: will also require knowledge of relative velocity, etc
--- TODO avoidance infogetter: where a thing can have a size radius, or other spatial description, taken into account
+-- TODO avoidance infogetter: may want to know about object radius, or other spatial description, to avoid something
 
 
 -- Internal functions
 -- =========================
-
-function FindDescendantWhichIsA(instance: Instance, inheritedClassName: string): Instance?
-	for _, descendant: Instance in instance:GetDescendants() do
-		if descendant:IsA(inheritedClassName) then
-			return descendant
-		end
-	end
-	return nil
-end
-
+-- n/a
 
 return InfoGetters

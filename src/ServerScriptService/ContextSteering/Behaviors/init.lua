@@ -1,7 +1,4 @@
 --!strict
-local CollectionService = game:GetService("CollectionService")
-local Players = game:GetService("Players")
-
 local DistanceFalloff = require(script.Parent.DistanceFalloff)
 local AngularFalloff = require(script.Parent.AngularFalloff)
 local InfoTypes = require(script.Parent.InfoGetters.InfoTypes)
@@ -15,7 +12,7 @@ Most behaviors follow this general format.
 	Some are special (ex. EmptyMap only takes map resolution number)
 PARAMS
 	npcInfo <- information the NPC needs to know about itself to make this decision
-	thingInfos <- invormation the NPC needs to know about the things it cares about to make this decision
+	thingInfos <- information the NPC needs to know about the things it cares about to make this decision
 	params <- behavior-specific type of table containing needed parameters
 RETURN
 	interests <- how interested (or afraid) the NPC is in the directions around it
@@ -38,12 +35,8 @@ end
 
 -- With default direction modifiers (Forward == 1, Right == 0), move towards things
 function Behaviors.Seek(npcInfo: CFrame, thingInfos: {CFrame}, params: BehaviorParams.GenericParams): {number}
-	local resolution = params.Resolution
-	local interestConeArcDegrees = params.InterestConeArcDegrees
-	local maxRange = params.RangeMax
-	
-	-- guarantee returned interest map has correct size, when #thingInfos == 0
-	local interests = table.create(resolution, 0)
+	-- Guarantee returned interest map has correct size, when #thingInfos == 0
+	local interests = table.create(params.Resolution, 0)
 	
 	if npcInfo ~= npcInfo then
 		error(`[ContextSteering] Behavior cannot use npcInfo containing NaN!`)
@@ -68,16 +61,16 @@ function Behaviors.Seek(npcInfo: CFrame, thingInfos: {CFrame}, params: BehaviorP
 		
 		-- Which direction are we interested in?
 		local playerAngleRadians = getYRotationAngleRad(differenceFlat.Unit)
-		local desiredSlotRaw = radToSlot(playerAngleRadians, resolution)
+		local desiredSlotRaw = radToSlot(playerAngleRadians, params.Resolution)
 
 		local directionModifier = Vector3.new(params.DirectionModifierWeightRight, 0, -params.DirectionModifierWeightForward)
-		local desiredSlotModifier = radToSlot(Behaviors.FORWARD:Angle(directionModifier, Behaviors.UP), resolution) - 1
+		local desiredSlotModifier = radToSlot(Behaviors.FORWARD:Angle(directionModifier, Behaviors.UP), params.Resolution) - 1
 		local desiredSlot = desiredSlotRaw + desiredSlotModifier
 		
 		-- Write interest to slots
 		local maxAngle = params.InterestConeArcDegrees / 2
-		for i = 1, resolution do
-			local slotAngleDegrees = calcSlotAngleDeg(desiredSlot, i, resolution)
+		for i = 1, params.Resolution do
+			local slotAngleDegrees = calcSlotAngleDeg(desiredSlot, i, params.Resolution)
 			local angularInterestLerpFraction = AngularFalloff.Linear(slotAngleDegrees, 1 / maxAngle)
 			local lerpFraction = distanceInterestLerpFraction * angularInterestLerpFraction
 			local slotInterest = lerp(lerpFraction, 0, params.InterestMax)
