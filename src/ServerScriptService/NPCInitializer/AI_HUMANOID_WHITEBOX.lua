@@ -30,11 +30,34 @@ function module.new(npc: Model)
 			t += RunService.Heartbeat:Wait()
 			
 			local interests = {} :: {{number}}
+			-- table.insert(
+			-- 	interests, 
+			-- 	Behaviors.Seek(
+			-- 		self.model:GetPivot(), 
+			-- 		InfoGetters.GetPlayerCFrames(),
+			-- 		BehaviorParams.NewGenericParams(
+			-- 			{
+			-- 				--Resolution = 23,
+			-- 				--RangeMin = 10,
+			-- 				--RangeMax = 30,
+			-- 				--InterestMax = 0.5,
+			-- 				--InterestConeArcDegrees = 90,
+			-- 				--DistanceFalloffStart = 10,
+			-- 				--DistanceFalloffEnd = 40,
+			-- 				--DirectionModifierWeightForward = 1,
+			-- 				--DirectionModifierWeightRight = 4,
+			-- 			}
+			-- 		)
+			-- 	)
+			-- )
 			table.insert(
 				interests, 
-				Behaviors.Seek(
-					self.model:GetPivot(), 
-					InfoGetters.GetPlayerCFrames(),
+				Behaviors.PursueIterative(
+					{
+						CFrame = self.model:GetPivot(),
+						Velocity = self.rootPart.AssemblyLinearVelocity
+					}, 
+					InfoGetters.GetPlayerCFramesAndVelocities(),
 					BehaviorParams.NewGenericParams(
 						{
 							--Resolution = 23,

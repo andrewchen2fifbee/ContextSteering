@@ -1,4 +1,6 @@
 --!strict
+local Debris = game:GetService("Debris")
+
 local DistanceFalloff = require(script.Parent.DistanceFalloff)
 local AngularFalloff = require(script.Parent.AngularFalloff)
 local InfoTypes = require(script.Parent.InfoGetters.InfoTypes)
@@ -18,7 +20,7 @@ RETURN
 	interests <- how interested (or afraid) the NPC is in the directions around it
 ]]
 
--- TODO additional behaviors
+-- TODO additional behaviors: Avoid
 local Behaviors = {}
 
 Behaviors.EPSILON = 1e-6 -- arbitrary small fudging number
@@ -41,10 +43,9 @@ function Behaviors.Seek(npcInfo: CFrame, thingInfos: {CFrame}, params: BehaviorP
 	for _, thingInfo in thingInfos do
 		ErrorIfNan(thingInfo, "thingInfo")
 		
-		local differencePos = thingInfo.Position - npcInfo.Position
-		local differencePosFlat = Vector3.new(differencePos.X, 0, differencePos.Z)
+		local differencePos = FlattenVector3(thingInfo.Position - npcInfo.Position)
 		
-		local distance = differencePosFlat.Magnitude
+		local distance = differencePos.Magnitude
 		if distance < params.RangeMin or distance > params.RangeMax then
 			continue
 		end
@@ -56,7 +57,7 @@ function Behaviors.Seek(npcInfo: CFrame, thingInfos: {CFrame}, params: BehaviorP
 		
 		-- Which direction are we interested in?
 		local directionModifier = Vector3.new(params.DirectionModifierWeightRight, 0, -params.DirectionModifierWeightForward)
-		local desiredSlot = CalcDesiredSlot(differencePosFlat, directionModifier, params.Resolution)
+		local desiredSlot = CalcDesiredSlot(differencePos, directionModifier, params.Resolution)
 		
 		WriteNearbySlots(interests, desiredSlot, distanceInterestFraction, params.InterestMax, params.InterestConeArcDegrees)
 	end
@@ -82,46 +83,133 @@ end
 --	return interests
 --end
 
--- Seek predicted future position, based on relative velocity / relative distance
+-- Seek predicted future position by solving for the best possible target interception (ignoring potential changes in velocity)
+-- 		(The missile knows where it is because it knows where it isn't)
 function Behaviors.Pursue(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
-	local futureThingCFrames: {CFrame} = {}
+	local interests = table.create(params.Resolution, 0)
 
 	ErrorIfNan(npcInfo, "npcInfo")
 	for _, thingInfo in thingInfos do
 		ErrorIfNan(thingInfo, "thingInfo")
 		
-		-- the missile knows where it is because it knows where it isn't
-		local differencePos = thingInfo.CFrame.Position - npcInfo.CFrame.Position
-		local differencePosFlat = Vector3.new(differencePos.X, 0, differencePos.Z)
+		local differencePos = FlattenVector3(thingInfo.CFrame.Position - npcInfo.CFrame.Position)
 		
-		local distance = differencePosFlat.Magnitude
+		local distance = differencePos.Magnitude
 		if distance < params.RangeMin or distance > params.RangeMax then
 			continue
 		end
-		
-		-- The predicted future position can be outside of RangeMax, in which case the thing is ignored
-		-- TODO based on distance, dVel: get a nicer approx time-to-target
-		-- local differenceVel = thingInfo.Velocity - npcInfo.Velocity
-		-- local differenceVelFlat = Vector3.new(differenceVel.X, 0, differenceVel.Z)
 
-		-- TEMP: good enough for now
-		local t: number = distance / npcInfo.Velocity.Magnitude
-		local cframe = thingInfo.CFrame + t * thingInfo.Velocity
-		table.insert(futureThingCFrames, cframe)
+		local npcVelocityFlat = FlattenVector3(npcInfo.Velocity)
+		local thingVelocityFlat = FlattenVector3(thingInfo.Velocity)
+
+		-- https://zulko.github.io/blog/2013/11/11/interception-of-a-linear-trajectory-with-constant-speed/
+		--		Page LaTeX display is broken. View the page source to see math expressions.
+		--		Note: norm == magnitude for vectors
+		local farPoint = FlattenVector3(thingInfo.CFrame.Position + 1000 * thingVelocityFlat)
+		-- local vecAF = FlattenVector3(farPoint - npcInfo.CFrame.Position)
+		local vecBA = FlattenVector3(npcInfo.CFrame.Position - thingInfo.CFrame.Position)
+		local vecBF = FlattenVector3(farPoint - thingInfo.CFrame.Position)
+		-- local distAF = vecAH.Magnitude
+		local distBA = vecBA.Magnitude
+		local distBF = vecBF.Magnitude
 		
-		-- TODO eventually do calcs instead of use seek, for better behavior
+		local determinant = (vecBA.X * vecBF.Z - vecBA.Z * vecBF.X)
+
+		local sinB = determinant / ((distBA * distBF) + Behaviors.EPSILON)
+		local sinA = (thingVelocityFlat.Magnitude / (npcVelocityFlat.Magnitude + Behaviors.EPSILON)) * sinB
+		local sinC = (sinA * math.sqrt(1 - sinB * sinB)) + (sinB * math.sqrt(1 - sinA * sinA))
+		local distBC = distBA * sinA / (sinC + Behaviors.EPSILON)
+		
+		local direction: Vector3 = nil
+		local canIntercept = distBC == distBC --math.abs(sinA) <= 1
+		if not canIntercept then
+			-- Can't intercept yet, run parallel for now
+			direction = SafeUnitVector3(thingVelocityFlat)
+			direction = direction.Magnitude > 0 and direction or differencePos
+		else
+			-- Dir -> To intercept point, interest -> inverse relation to intercept time/distance
+			local interceptPoint = thingInfo.CFrame.Position + distBC * SafeUnitVector3(vecBF) 
+			direction = FlattenVector3(interceptPoint - npcInfo.CFrame.Position)
+		end
+		
+		-- Will sometimes look dumb, but prioritizing closest is good enough
+		local distanceFalloffDistance = math.max(distance - params.DistanceFalloffStart, 0)
+		local distanceFalloffRange = params.DistanceFalloffEnd - params.DistanceFalloffStart
+		local distanceInterestFraction = DistanceFalloff.Linear(distanceFalloffDistance, 1 / distanceFalloffRange)
+
+		local directionModifier = Vector3.new(params.DirectionModifierWeightRight, 0, -params.DirectionModifierWeightForward)
+		local desiredSlot = CalcDesiredSlot(direction, directionModifier, params.Resolution)
+		
+		WriteNearbySlots(interests, desiredSlot, distanceInterestFraction, params.InterestMax, params.InterestConeArcDegrees)
 	end
 
-	-- that's right! the square hole! https://www.youtube.com/watch?v=cUbIkNUFs-4
-	return Behaviors.Seek(npcInfo.CFrame, futureThingCFrames, params)
+	return interests
 end
 
+-- Evade target's future position by moving away from the expected interception point (ignoring potential changes in velocity)
 function Behaviors.Evade(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
 	local paramsModified = BehaviorParams.NewGenericParams(params)
 	paramsModified.DirectionModifierWeightForward = -paramsModified.DirectionModifierWeightForward
 	paramsModified.DirectionModifierWeightRight = -paramsModified.DirectionModifierWeightRight
 
 	return Behaviors.Pursue(npcInfo, thingInfos, paramsModified)
+end
+
+-- Seek predicted future position using an iterative solver to find an approximate intercept point
+-- 		Less "optimal", but may feel nicer
+--		May be safer than Behaviors.Pursue
+function Behaviors.PursueIterative(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
+	local interests = table.create(params.Resolution, 0)
+
+	ErrorIfNan(npcInfo, "npcInfo")
+	for _, thingInfo in thingInfos do
+		ErrorIfNan(thingInfo, "thingInfo")
+		
+		local differencePos = FlattenVector3(thingInfo.CFrame.Position - npcInfo.CFrame.Position)
+		
+		local distance = differencePos.Magnitude
+		if distance < params.RangeMin or distance > params.RangeMax then
+			continue
+		end
+		
+		local npcVelocityFlat = FlattenVector3(npcInfo.Velocity)
+		local thingVelocityFlat = FlattenVector3(thingInfo.Velocity)
+
+		local nextDifference: Vector3 = nil
+		local nextDistance: number = distance
+		for i = 1, 3 do
+			local nextT = nextDistance / (npcVelocityFlat.Magnitude + Behaviors.EPSILON)
+			local nextThingMovement = nextT * thingVelocityFlat
+			local nextPos = FlattenVector3(thingInfo.CFrame.Position + nextThingMovement)
+			nextDifference = FlattenVector3(nextPos - npcInfo.CFrame.Position)
+			nextDistance = nextDifference.Magnitude
+		end
+		
+		DebugDrawBeam(npcInfo.CFrame.Position, npcInfo.CFrame.Position + nextDifference)
+
+		-- Will sometimes look dumb, but prioritizing closest is good enough
+		local distanceFalloffDistance = math.max(distance - params.DistanceFalloffStart, 0)
+		local distanceFalloffRange = params.DistanceFalloffEnd - params.DistanceFalloffStart
+		local distanceInterestFraction = DistanceFalloff.Linear(distanceFalloffDistance, 1 / distanceFalloffRange)
+
+		local directionModifier = Vector3.new(params.DirectionModifierWeightRight, 0, -params.DirectionModifierWeightForward)
+		local desiredSlot = CalcDesiredSlot(nextDifference, directionModifier, params.Resolution)
+		
+		WriteNearbySlots(interests, desiredSlot, distanceInterestFraction, params.InterestMax, params.InterestConeArcDegrees)
+	end
+
+	return interests
+end
+
+-- Evade target's predicted future position using an iterative solver to move away from an approximate intercept point
+-- 		Less "optimal", but may feel nicer
+--		May be safer than Behaviors.Pursue
+function Behaviors.EvadeIterative(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
+	local paramsModified = BehaviorParams.NewGenericParams(params)
+	paramsModified.DirectionModifierWeightForward = -paramsModified.DirectionModifierWeightForward
+	paramsModified.DirectionModifierWeightRight = -paramsModified.DirectionModifierWeightRight
+
+	return Behaviors.PursueIterative(npcInfo, thingInfos, paramsModified)
 end
 
 function Behaviors.Avoid(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
@@ -140,8 +228,8 @@ end
 
 -- Given a vector pointing from NPC to target, and a vector describing the direction the NPC wants to move relative to target...
 --	... for an interest map with numSlots slots, return the slot number matching the desired movement direction for that target
-function CalcDesiredSlot(differencePos: Vector3, directionModifier: Vector3, numSlots: number)
-	local playerAngleRadians = CalcYRotationAngleRad(differencePos.Unit)
+function CalcDesiredSlot(direction: Vector3, directionModifier: Vector3, numSlots: number)
+	local playerAngleRadians = CalcYRotationAngleRad(direction)
 	local modifierAngleRadians = CalcYRotationAngleRad(directionModifier)
 	local slotAngleRadians = (playerAngleRadians + modifierAngleRadians) % (2 * math.pi)
 	return RadToSlot(slotAngleRadians, numSlots)
@@ -162,10 +250,9 @@ end
 
 -- Get the y axis rotation angle needed, in radians, for...
 --	...for a new vector to line up with existing vector, when projected onto the horizontally flat XZ plane
---	Returns 0 when vectorFlat == Vector3.new(0, 0, 0)
+--	Returns 0 when FlattenVector3(vector) == Vector3.new(0, 0, 0)
 function CalcYRotationAngleRad(vector: Vector3): number
-	local vectorFlat = Vector3.new(vector.X, 0, vector.Z)
-	return Behaviors.FORWARD:Angle(vectorFlat, Behaviors.UP)
+	return Behaviors.FORWARD:Angle(FlattenVector3(vector), Behaviors.UP)
 end
 
 -- Calculate shortest angle between the two slots, in degrees
@@ -194,12 +281,52 @@ end
 
 function ErrorIfNan<T>(thing: T, name: string): ()
 	if thing ~= thing then
-		error(`[ContextSteering] {name} is/contains NaN!`)
+		local typename = typeof(thing) == "Instance" and thing.ClassName or typeof(thing)
+		error(`[ContextSteering] {name} ({typename}) is/contains NaN! Contents: {thing}`)
 	end
+end
+
+-- Onto XZ plane
+function FlattenVector3(vec: Vector3): Vector3
+	return Vector3.new(vec.X, 0, vec.Z)
+end
+
+-- Avoid NaN from Vector3(0, 0, 0).Unit
+function SafeUnitVector3(vec: Vector3): Vector3
+	return vec.Magnitude > 0 and vec.Unit or vec
 end
 
 function lerp(x: number, start: number, finish: number): number
 	return start + x * (finish - start)
+end
+
+-- Debug visuals
+-- =========================
+
+function DebugDrawBeam(start: Vector3, finish: Vector3, color: Color3?, lifetime: number?)
+	local _color = color or Color3.new(1, 0, 0)
+	local _lifetime = lifetime or 0.25
+	
+	local part = Instance.new("Part")
+	part.Anchored = true
+	part.CanCollide = false
+	part.CanTouch = false
+	part.Transparency = 1
+	local att0 = Instance.new("Attachment")
+	att0.Position = start
+	att0.Parent = part
+	local att1 = Instance.new("Attachment")
+	att1.Position = finish
+	att1.Parent = part
+	local beam = Instance.new("Beam")
+	beam.Attachment0 = att0
+	beam.Attachment1 = att1
+	beam.Color = ColorSequence.new(_color)
+	beam.FaceCamera = true
+	beam.Parent = part
+	
+	Debris:AddItem(part, _lifetime)
+	part.Parent = workspace
 end
 
 return Behaviors
