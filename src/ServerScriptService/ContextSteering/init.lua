@@ -103,7 +103,7 @@ end
 -- Internal functions
 -- =========================
 
-function circularIndex(t: {}, i: number): number
+function CircularIndex(t: {}, i: number): number
 	return ( (i - 1) % #t ) + 1
 end
 
@@ -122,11 +122,11 @@ function InterpolateMaxSlotAndInterest(contextMap: {number}, maxIdx: number): (n
 		return maxIdx, 0
 	end
 
-	local idxL2 = circularIndex(contextMap, maxIdx - 2)
-	local idxL1 = circularIndex(contextMap, maxIdx - 1)
+	local idxL2 = CircularIndex(contextMap, maxIdx - 2)
+	local idxL1 = CircularIndex(contextMap, maxIdx - 1)
 	-- maxIdx in middle
-	local idxR1 = circularIndex(contextMap, maxIdx + 1)
-	local idxR2 = circularIndex(contextMap, maxIdx + 2)
+	local idxR1 = CircularIndex(contextMap, maxIdx + 1)
+	local idxR2 = CircularIndex(contextMap, maxIdx + 2)
 
 	-- Line intersection
 	-- ax + c = bx + d -> x = (d - c) / (a - b)

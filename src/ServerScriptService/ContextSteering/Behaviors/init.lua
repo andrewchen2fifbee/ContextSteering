@@ -18,7 +18,6 @@ RETURN
 	interests <- how interested (or afraid) the NPC is in the directions around it
 ]]
 
--- TODO eventually support custom distance + angle falloff functions, etc
 -- TODO additional behaviors
 local Behaviors = {}
 
@@ -38,18 +37,14 @@ function Behaviors.Seek(npcInfo: CFrame, thingInfos: {CFrame}, params: BehaviorP
 	-- Guarantee returned interest map has correct size, when #thingInfos == 0
 	local interests = table.create(params.Resolution, 0)
 	
-	if npcInfo ~= npcInfo then
-		error(`[ContextSteering] Behavior cannot use npcInfo containing NaN!`)
-	end
+	ErrorIfNan(npcInfo, "npcInfo")
 	for _, thingInfo in thingInfos do
-		if thingInfo.Position ~= thingInfo.Position then
-			error(`[ContextSteering] Behavior cannot use thingInfo containing NaN!`)
-		end
+		ErrorIfNan(thingInfo, "thingInfo")
 		
-		local difference = thingInfo.Position - npcInfo.Position
-		local differenceFlat = Vector3.new(difference.X, 0, difference.Z)
+		local differencePos = thingInfo.Position - npcInfo.Position
+		local differencePosFlat = Vector3.new(differencePos.X, 0, differencePos.Z)
 		
-		local distance = differenceFlat.Magnitude
+		local distance = differencePosFlat.Magnitude
 		if distance < params.RangeMin or distance > params.RangeMax then
 			continue
 		end
@@ -57,25 +52,13 @@ function Behaviors.Seek(npcInfo: CFrame, thingInfos: {CFrame}, params: BehaviorP
 		-- Nearby -> higher interest
 		local distanceFalloffDistance = math.max(distance - params.DistanceFalloffStart, 0)
 		local distanceFalloffRange = params.DistanceFalloffEnd - params.DistanceFalloffStart
-		local distanceInterestLerpFraction = DistanceFalloff.Linear(distanceFalloffDistance, 1 / distanceFalloffRange)
+		local distanceInterestFraction = DistanceFalloff.Linear(distanceFalloffDistance, 1 / distanceFalloffRange)
 		
 		-- Which direction are we interested in?
-		local playerAngleRadians = getYRotationAngleRad(differenceFlat.Unit)
-		local desiredSlotRaw = radToSlot(playerAngleRadians, params.Resolution)
-
 		local directionModifier = Vector3.new(params.DirectionModifierWeightRight, 0, -params.DirectionModifierWeightForward)
-		local desiredSlotModifier = radToSlot(Behaviors.FORWARD:Angle(directionModifier, Behaviors.UP), params.Resolution) - 1
-		local desiredSlot = desiredSlotRaw + desiredSlotModifier
+		local desiredSlot = CalcDesiredSlot(differencePosFlat, directionModifier, params.Resolution)
 		
-		-- Write interest to slots
-		local maxAngle = params.InterestConeArcDegrees / 2
-		for i = 1, params.Resolution do
-			local slotAngleDegrees = calcSlotAngleDeg(desiredSlot, i, params.Resolution)
-			local angularInterestLerpFraction = AngularFalloff.Linear(slotAngleDegrees, 1 / maxAngle)
-			local lerpFraction = distanceInterestLerpFraction * angularInterestLerpFraction
-			local slotInterest = lerp(lerpFraction, 0, params.InterestMax)
-			interests[i] = slotInterest
-		end
+		WriteNearbySlots(interests, desiredSlot, distanceInterestFraction, params.InterestMax, params.InterestConeArcDegrees)
 	end
 	
 	return interests
@@ -90,23 +73,58 @@ function Behaviors.Flee(npcInfo: CFrame, thingInfos: {CFrame}, params: BehaviorP
 	return Behaviors.Seek(npcInfo, thingInfos, paramsModified)
 end
 
---function Behaviors.OrbitPlayers(position: Vector3, orbitDistance: number): {number}
---	-- TODO impl
+-- TODO impl
+--function Behaviors.Orbit(...): {number}
 --	assert(false, "func unimplemented")
 
 --	local interests = {}
 
---	for _, player in Players:GetPlayers() do
-
---	end
-
 --	return interests
 --end
 
--- TODO Pursue/Evade -> takes relative velocity into account
+-- Seek predicted future position, based on relative velocity / relative distance
+function Behaviors.Pursue(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
+	local futureThingCFrames: {CFrame} = {}
 
--- TODO should this use CFrameAndVelocity, or CFrame + developer handling interpolating to future positions manually?
-function Behaviors.Avoid(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}): {number}
+	ErrorIfNan(npcInfo, "npcInfo")
+	for _, thingInfo in thingInfos do
+		ErrorIfNan(thingInfo, "thingInfo")
+		
+		-- the missile knows where it is because it knows where it isn't
+		local differencePos = thingInfo.CFrame.Position - npcInfo.CFrame.Position
+		local differencePosFlat = Vector3.new(differencePos.X, 0, differencePos.Z)
+		
+		local distance = differencePosFlat.Magnitude
+		if distance < params.RangeMin or distance > params.RangeMax then
+			continue
+		end
+		
+		-- The predicted future position can be outside of RangeMax, in which case the thing is ignored
+		-- TODO based on distance, dVel: get a nicer approx time-to-target
+		-- local differenceVel = thingInfo.Velocity - npcInfo.Velocity
+		-- local differenceVelFlat = Vector3.new(differenceVel.X, 0, differenceVel.Z)
+
+		-- TEMP: good enough for now
+		local t: number = distance / npcInfo.Velocity.Magnitude
+		local cframe = thingInfo.CFrame + t * thingInfo.Velocity
+		table.insert(futureThingCFrames, cframe)
+		
+		-- TODO eventually do calcs instead of use seek, for better behavior
+	end
+
+	-- that's right! the square hole! https://www.youtube.com/watch?v=cUbIkNUFs-4
+	return Behaviors.Seek(npcInfo.CFrame, futureThingCFrames, params)
+end
+
+function Behaviors.Evade(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
+	local paramsModified = BehaviorParams.NewGenericParams(params)
+	paramsModified.DirectionModifierWeightForward = -paramsModified.DirectionModifierWeightForward
+	paramsModified.DirectionModifierWeightRight = -paramsModified.DirectionModifierWeightRight
+
+	return Behaviors.Pursue(npcInfo, thingInfos, paramsModified)
+end
+
+function Behaviors.Avoid(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
 	-- TODO impl
 	assert(false, "func unimplemented")
 
@@ -120,34 +138,64 @@ end
 -- Internal functions
 -- =========================
 
+-- Given a vector pointing from NPC to target, and a vector describing the direction the NPC wants to move relative to target...
+--	... for an interest map with numSlots slots, return the slot number matching the desired movement direction for that target
+function CalcDesiredSlot(differencePos: Vector3, directionModifier: Vector3, numSlots: number)
+	local playerAngleRadians = CalcYRotationAngleRad(differencePos.Unit)
+	local modifierAngleRadians = CalcYRotationAngleRad(directionModifier)
+	local slotAngleRadians = (playerAngleRadians + modifierAngleRadians) % (2 * math.pi)
+	return RadToSlot(slotAngleRadians, numSlots)
+end
+
+-- Write interest values with included angular falloff to an interest map
+-- If the interest value for a slot is less than the existing value, nothing changes in that slot
+function WriteNearbySlots(interests: {number}, desiredSlot: number, interestFraction: number, interestMax: number, arcDegrees: number): ()
+	local maxAngle = arcDegrees / 2
+	for i = 1, #interests do
+		local slotAngleDegrees = CalcSlotAngleDeg(desiredSlot, i, #interests)
+		local angularInterestLerpFraction = AngularFalloff.Linear(slotAngleDegrees, 1 / maxAngle)
+		local lerpFraction = interestFraction * angularInterestLerpFraction
+		local slotInterest = lerp(lerpFraction, 0, interestMax)
+		interests[i] = math.max(slotInterest, interests[i])
+	end
+end
+
 -- Get the y axis rotation angle needed, in radians, for...
 --	...for a new vector to line up with existing vector, when projected onto the horizontally flat XZ plane
 --	Returns 0 when vectorFlat == Vector3.new(0, 0, 0)
-function getYRotationAngleRad(vector: Vector3): number
+function CalcYRotationAngleRad(vector: Vector3): number
 	local vectorFlat = Vector3.new(vector.X, 0, vector.Z)
 	return Behaviors.FORWARD:Angle(vectorFlat, Behaviors.UP)
 end
 
--- Convert an angle, in radians, into the corresponding context map slot number
--- Fractional slots allowed as floats, range [1, resolution + 0.99...)
--- 		When slot > resolution: is between the first and last slots, almost a full rotation
-function radToSlot(angleRadians: number, numSlots: number)
-	local slot = ( (angleRadians / (2 * math.pi) ) * numSlots) + 1
-	assert(slot < numSlots + 1, `Slot {slot} exceeds upper bound {numSlots + 1}! (angleRadians is {angleRadians})`)
-	return slot
-end
-
 -- Calculate shortest angle between the two slots, in degrees
-function calcSlotAngleDeg(a: number, b: number, numSlots: number): number
+function CalcSlotAngleDeg(a: number, b: number, numSlots: number): number
 	-- slotAngleSlots is, in fact, measured in slots
 	local slotAngleSlots = math.min(
 		-- There's probably a better way to do this, but this is good enough 
-		-- Doesn't work for all a, b: Keep a, b in [0, numSlots + 1)
+		-- Doesn't work for all a, b: Keep a - b in [-1.5 * numSlots, 1.5 * numSlots]
 		math.abs(a - b),
 		math.abs(a - b + numSlots),
 		math.abs(a - b - numSlots)
 	)
 	return slotAngleSlots / numSlots * 360
+end
+
+-- Convert an angle, in radians, into the corresponding context map slot number
+-- Fractional slots allowed as floats, range [1, resolution + 0.99...)
+-- 		When slot > resolution: is between the first and last slots, almost a full rotation
+function RadToSlot(angleRadians: number, numSlots: number): number
+	local slot = ( (angleRadians / (2 * math.pi) ) * numSlots) + 1
+	if slot >= numSlots + 1 then
+		error(`Slot {slot} exceeds upper bound {numSlots + 0.99}...! (angleRadians is {angleRadians})`)
+	end
+	return slot
+end
+
+function ErrorIfNan<T>(thing: T, name: string): ()
+	if thing ~= thing then
+		error(`[ContextSteering] {name} is/contains NaN!`)
+	end
 end
 
 function lerp(x: number, start: number, finish: number): number

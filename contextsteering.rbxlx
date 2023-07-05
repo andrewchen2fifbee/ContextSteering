@@ -7674,27 +7674,27 @@ end
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>15.4894676</X>
-					<Y>12.0372458</Y>
-					<Z>-25.8988647</Z>
-					<R00>-0.991214037</R00>
-					<R01>-0.0267385021</R01>
-					<R02>0.129537627</R02>
-					<R10>-0</R10>
-					<R11>0.979354024</R11>
-					<R12>0.20215328</R12>
-					<R20>-0.132268459</R20>
-					<R21>0.200377166</R21>
-					<R22>-0.970749259</R22>
+					<X>19.2807236</X>
+					<Y>8.29223061</Y>
+					<Z>-2.94512486</Z>
+					<R00>-0.315634817</R00>
+					<R01>-0.499509633</R01>
+					<R02>0.80676204</R02>
+					<R10>1.49011594e-08</R10>
+					<R11>0.850224853</R11>
+					<R12>0.526419818</R12>
+					<R20>-0.948880732</R20>
+					<R21>0.166156441</R21>
+					<R22>-0.268360585</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>15.2303925</X>
-					<Y>11.6329393</Y>
-					<Z>-23.9573669</Z>
+					<X>17.6672001</X>
+					<Y>7.23939133</Y>
+					<Z>-2.40840387</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -8327,8 +8327,7 @@ This library is intended for movement on a horizontal plane.
 Obvious use case: Creating interesting NPC movement without PathfindingService. 
 	You can probably find other uses for context steering. 
 ]]
--- TODO port to Rojo: preparation for repository creation + future release
--- TODO add testing: integration (bottom-up), some unit
+-- TODO add testing: integration (bottom-up), some unit on critical components? look into this
 -- 			integration: BehaviorParams + InfoGetters -> Behaviors, Behaviors -> ContextSteering
 --			test intentionally breaking constraints to make sure it fails in a predictable way
 local ContextSteering = {}
@@ -8471,9 +8470,6 @@ return ContextSteering
 					<string name="Name">Behaviors</string>
 					<string name="ScriptGuid">{A92A5148-395A-49C8-A281-8DBB912B5879}</string>
 					<ProtectedString name="Source"><![CDATA[--!strict
-local CollectionService = game:GetService("CollectionService")
-local Players = game:GetService("Players")
-
 local DistanceFalloff = require(script.Parent.DistanceFalloff)
 local AngularFalloff = require(script.Parent.AngularFalloff)
 local InfoTypes = require(script.Parent.InfoGetters.InfoTypes)
@@ -8487,7 +8483,7 @@ Most behaviors follow this general format.
 	Some are special (ex. EmptyMap only takes map resolution number)
 PARAMS
 	npcInfo <- information the NPC needs to know about itself to make this decision
-	thingInfos <- invormation the NPC needs to know about the things it cares about to make this decision
+	thingInfos <- information the NPC needs to know about the things it cares about to make this decision
 	params <- behavior-specific type of table containing needed parameters
 RETURN
 	interests <- how interested (or afraid) the NPC is in the directions around it
@@ -8510,12 +8506,8 @@ end
 
 -- With default direction modifiers (Forward == 1, Right == 0), move towards things
 function Behaviors.Seek(npcInfo: CFrame, thingInfos: {CFrame}, params: BehaviorParams.GenericParams): {number}
-	local resolution = params.Resolution
-	local interestConeArcDegrees = params.InterestConeArcDegrees
-	local maxRange = params.RangeMax
-	
-	-- guarantee returned interest map has correct size, when #thingInfos == 0
-	local interests = table.create(resolution, 0)
+	-- Guarantee returned interest map has correct size, when #thingInfos == 0
+	local interests = table.create(params.Resolution, 0)
 	
 	if npcInfo ~= npcInfo then
 		error(`[ContextSteering] Behavior cannot use npcInfo containing NaN!`)
@@ -8540,16 +8532,16 @@ function Behaviors.Seek(npcInfo: CFrame, thingInfos: {CFrame}, params: BehaviorP
 		
 		-- Which direction are we interested in?
 		local playerAngleRadians = getYRotationAngleRad(differenceFlat.Unit)
-		local desiredSlotRaw = radToSlot(playerAngleRadians, resolution)
+		local desiredSlotRaw = radToSlot(playerAngleRadians, params.Resolution)
 
 		local directionModifier = Vector3.new(params.DirectionModifierWeightRight, 0, -params.DirectionModifierWeightForward)
-		local desiredSlotModifier = radToSlot(Behaviors.FORWARD:Angle(directionModifier, Behaviors.UP), resolution) - 1
+		local desiredSlotModifier = radToSlot(Behaviors.FORWARD:Angle(directionModifier, Behaviors.UP), params.Resolution) - 1
 		local desiredSlot = desiredSlotRaw + desiredSlotModifier
 		
 		-- Write interest to slots
 		local maxAngle = params.InterestConeArcDegrees / 2
-		for i = 1, resolution do
-			local slotAngleDegrees = calcSlotAngleDeg(desiredSlot, i, resolution)
+		for i = 1, params.Resolution do
+			local slotAngleDegrees = calcSlotAngleDeg(desiredSlot, i, params.Resolution)
 			local angularInterestLerpFraction = AngularFalloff.Linear(slotAngleDegrees, 1 / maxAngle)
 			local lerpFraction = distanceInterestLerpFraction * angularInterestLerpFraction
 			local slotInterest = lerp(lerpFraction, 0, params.InterestMax)
@@ -8682,7 +8674,6 @@ export type GenericParams = {
 	--[[
 	Interests will be returned in range [0, InterestMax]
 	]]
-	-- TODO may be worth readding InterestMin later
 	InterestMax: number, -- any number > 0
 
 	--[[
@@ -8744,36 +8735,35 @@ export type GenericParamsConstructorOverrides = {
 }
 
 function BehaviorParams.NewGenericParams(overrides: GenericParamsConstructorOverrides?): GenericParams
-	local overrides = (overrides or {}) :: GenericParamsConstructorOverrides
+	local _overrides = (overrides or {}) :: GenericParamsConstructorOverrides
 	
 	local params = {
-		DebugName = overrides.DebugName or "",
+		DebugName = _overrides.DebugName or "",
 		
-		Resolution = overrides.Resolution or BehaviorParams.DEFAULT_RESOLUTION,
+		Resolution = _overrides.Resolution or BehaviorParams.DEFAULT_RESOLUTION,
 		
-		RangeMin = overrides.RangeMin or 0,
-		RangeMax = overrides.RangeMax or 100,
+		RangeMin = _overrides.RangeMin or 0,
+		RangeMax = _overrides.RangeMax or 100,
 		
-		InterestMax = overrides.InterestMax or 1,
+		InterestMax = _overrides.InterestMax or 1,
 		
 		-- Falloff start/end ranges handled below: Defaults are derived from values in params
 		
-		InterestConeArcDegrees = overrides.InterestConeArcDegrees or 180,
+		InterestConeArcDegrees = _overrides.InterestConeArcDegrees or 180,
 		
-		DirectionModifierWeightForward = overrides.DirectionModifierWeightForward or 1,
-		DirectionModifierWeightRight = overrides.DirectionModifierWeightRight or 0,
+		DirectionModifierWeightForward = _overrides.DirectionModifierWeightForward or 1,
+		DirectionModifierWeightRight = _overrides.DirectionModifierWeightRight or 0,
 	}
 	
 	-- Potentially derived properties
-	params.DistanceFalloffStart = overrides.DistanceFalloffStart or params.RangeMin
-	params.DistanceFalloffEnd = overrides.DistanceFalloffEnd or params.RangeMax
+	params.DistanceFalloffStart = _overrides.DistanceFalloffStart or params.RangeMin
+	params.DistanceFalloffEnd = _overrides.DistanceFalloffEnd or params.RangeMax
 	
 	return params
 end
 
 -- Testing/debug: Verifies that params doesn't violate any constraints
 function BehaviorParams.VerifyGenericParams(params: GenericParams): (boolean, string?)
-	local valid = true
 	local errStart = "[ContextSteering] BehaviorParams verification failed: "
 	
 	if not (params.Resolution > 2) then
@@ -8883,12 +8873,17 @@ local Players = game:GetService("Players")
 local InfoTypes = require(script.InfoTypes)
 
 --[[ DESCRIPTION
-Gets information from the world, so behavior functions can use it to help make decisions
-TODO desc me
+Functions which get information from the world, so behavior functions can use that information to make decisions.
+If you want to get information from the workspace, this is the place to do it.
 ]]
 local InfoGetters = {}
 
--- Return CFrame for all players with (player.Character ~+ nil)
+--[[
+PARAMS
+	none
+RETURN
+	cframes <- table of CFrames for all players with (player.Character ~= nil)
+]]
 function InfoGetters.GetPlayerCFrames(): {CFrame}
 	local cframes: {CFrame} = {}
 	
@@ -8902,7 +8897,14 @@ function InfoGetters.GetPlayerCFrames(): {CFrame}
 	return cframes
 end
 
--- Generic tagged-thing infogetter, supporting PVInstance (BasePart, Model) and Attachment types
+--[[
+PARAMS
+	tag <- string ContextService tag for which you want tagged Instance CFrames
+RETURN
+	cframes <- table of CFrames for all supported types of tagged Instance
+NOTES
+	Supported types: PVInstance (BasePart, Model), Attachment
+]]
 function InfoGetters.GetTaggedCFrames(tag: string): {CFrame}
 	local cframes: {CFrame} = {}
 	
@@ -8919,6 +8921,16 @@ function InfoGetters.GetTaggedCFrames(tag: string): {CFrame}
 	return cframes
 end
 
+--[[
+PARAMS
+	npcCFrame <- CFrame to get random points around
+	numPoints <- how many random points to get
+	minDistance <- random points are at least this far away, in studs
+	maxDistance <- random points are at most this far away, in studs
+RETURN
+	cframes <- table of randomly placed nearby CFrames, on the same horizontal plane that npcCFrame is on
+		(npcCFrame.Position.Y = randomCFrame.Position.Y)
+]]
 function InfoGetters.GetRandomCFramesNearby(npcCFrame: CFrame, numPoints: number, minDistance: number, maxDistance: number): {CFrame}
 	local cframes: {CFrame} = {}
 	
@@ -8935,10 +8947,15 @@ function InfoGetters.GetRandomCFramesNearby(npcCFrame: CFrame, numPoints: number
 	return cframes
 end
 
--- Return CFrameAndVelocity for all players with (player.Character ~+ nil and player.Character.PrimaryPart ~= nil)
--- Make sure characters have PrimaryPart set!
+--[[
+PARAMS
+	none
+RETURN
+	cframesAndVelocities <- table of CFrameAndVelocitys for all players with 
+		(player.Character ~= nil and player.Character.PrimaryPart ~= nil)
+]]
 function InfoGetters.GetPlayerCFramesAndVelocities(): {InfoTypes.CFrameAndVelocity}
-	local cframesandvelocities: {InfoTypes.CFrameAndVelocity} = {}
+	local cframesAndVelocities: {InfoTypes.CFrameAndVelocity} = {}
 	
 	for _, player in Players:GetPlayers() do
 		local character = player.Character
@@ -8949,18 +8966,26 @@ function InfoGetters.GetPlayerCFramesAndVelocities(): {InfoTypes.CFrameAndVeloci
 				CFrame = character:GetPivot(),
 				Velocity = character.PrimaryPart.AssemblyLinearVelocity
 			}
-			table.insert(cframesandvelocities, cframeAndVelocity)
+			table.insert(cframesAndVelocities, cframeAndVelocity)
 		end
 	end
 	
-	return cframesandvelocities
+	return cframesAndVelocities
 end
 
--- Generic tagged-thing infogetter, supporting BasePart, Model (sometimes), and Attachment (sometimes) types
--- Make sure Models have PrimaryPart set!
--- Make sure Attachments are parented to a supported type (BasePart, Model w/ PrimaryPart)!
+--[[
+PARAMS
+	tag <- string ContextService tag for which you want tagged Instance CFrameAndVelocitys
+RETURN
+	cframesAndVelocities <- table of CFrameAndVelocitys for all supported types of tagged Instance
+NOTES
+	Supported types: 
+		BasePart, 
+		Model (requires Model.PrimaryPart ~= nil), 
+		Attachment (requires Attachment.Parent:IsA("BasePart") or Attachment.Parent:IsA("Model"))
+]]
 function InfoGetters.GetTaggedCFramesAndVelocities(tag: string): {InfoTypes.CFrameAndVelocity}
-	local cframesandvelocities: {InfoTypes.CFrameAndVelocity} = {}
+	local cframesAndVelocities: {InfoTypes.CFrameAndVelocity} = {}
 	
 	for _, thing in CollectionService:GetTagged(tag) do
 		if thing:IsA("Model") then
@@ -8971,13 +8996,13 @@ function InfoGetters.GetTaggedCFramesAndVelocities(tag: string): {InfoTypes.CFra
 				CFrame = thing:GetPivot(),
 				Velocity = thing.PrimaryPart.AssemblyLinearVelocity
 			}
-			table.insert(cframesandvelocities, cframeAndVelocity)
+			table.insert(cframesAndVelocities, cframeAndVelocity)
 		elseif thing:IsA("BasePart") then
 			local cframeAndVelocity: InfoTypes.CFrameAndVelocity = {
 				CFrame = thing:GetPivot(),
 				Velocity = thing.AssemblyLinearVelocity
 			}
-			table.insert(cframesandvelocities, cframeAndVelocity)
+			table.insert(cframesAndVelocities, cframeAndVelocity)
 		elseif thing:IsA("Attachment") then
 			local parentIsBasePart = thing.Parent and thing.Parent:IsA("BasePart")
 			local parentIsValidModel = thing.Parent and thing.Parent:IsA("Model") and thing.Parent.PrimaryPart
@@ -8990,31 +9015,21 @@ function InfoGetters.GetTaggedCFramesAndVelocities(tag: string): {InfoTypes.CFra
 				CFrame = thing.Parent:GetPivot(),
 				Velocity = velocitySource.AssemblyLinearVelocity
 			}
-			table.insert(cframesandvelocities, cframeAndVelocity)
+			table.insert(cframesAndVelocities, cframeAndVelocity)
 		else
 			warn(`[ContextSteering] GetTaggedCFramesAndVelocities does not support tagged objects of type {thing.ClassName}! Skipping...`)
 		end
 	end
 
-	return cframesandvelocities
+	return cframesAndVelocities
 end
 
--- TODO pursuit/evade future position infogetter: will also require knowledge of relative velocity, etc
--- TODO avoidance infogetter: where a thing can have a size radius, or other spatial description, taken into account
+-- TODO avoidance infogetter: may want to know about object radius, or other spatial description, to avoid something
 
 
 -- Internal functions
 -- =========================
-
-function FindDescendantWhichIsA(instance: Instance, inheritedClassName: string): Instance?
-	for _, descendant: Instance in instance:GetDescendants() do
-		if descendant:IsA(inheritedClassName) then
-			return descendant
-		end
-	end
-	return nil
-end
-
+-- n/a
 
 return InfoGetters
 ]]></ProtectedString>
@@ -9034,9 +9049,6 @@ return InfoGetters
 --[[ DESCRIPTION
 Custom thing-information type definitions.
 For use in InfoGetters, and any modules which work with return values from InfoGetters (ex. Behaviors).
-TODO IS THIS USEFUL?
-	Figure out if want to use this
-	Alternative: Interpolate to various future points w/ different interest weights
 ]]
 
 export type CFrameAndVelocity = {
@@ -9134,16 +9146,6 @@ bGUDAQ==]]></BinaryString>
 			<int64 name="SourceAssetId">-1</int64>
 			<BinaryString name="Tags"></BinaryString>
 			<UniqueId name="UniqueId">251140ca871f282904b531490000034b</UniqueId>
-		</Properties>
-	</Item>
-	<Item class="GuidRegistryService" referent="RBXA93C906C7B534B3EAE955A137A5A7A7F">
-		<Properties>
-			<BinaryString name="AttributesSerialize"></BinaryString>
-			<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-			<string name="Name">GuidRegistryService</string>
-			<int64 name="SourceAssetId">-1</int64>
-			<BinaryString name="Tags"></BinaryString>
-			<UniqueId name="UniqueId">251140ca871f282904b531490000035c</UniqueId>
 		</Properties>
 	</Item>
 	<Item class="Lighting" referent="RBX33D238F9F90448B7868074878EAEBF3B">
@@ -9280,6 +9282,27 @@ bGUDAQ==]]></BinaryString>
 				<UniqueId name="UniqueId">44b188dace632b4702e9c68d004831fb</UniqueId>
 			</Properties>
 		</Item>
+	</Item>
+	<Item class="LodDataService" referent="RBX13D5E0E79DAC40EB8A9E08E4D5EA722C">
+		<Properties>
+			<BinaryString name="AttributesSerialize"></BinaryString>
+			<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+			<string name="Name">Instance</string>
+			<int64 name="SourceAssetId">-1</int64>
+			<BinaryString name="Tags"></BinaryString>
+			<UniqueId name="UniqueId">44b188dace632b4702e9c68d004830d0</UniqueId>
+		</Properties>
+	</Item>
+	<Item class="ServiceVisibilityService" referent="RBXDFEE36B2E53D43F883900115E81E18B8">
+		<Properties>
+			<BinaryString name="AttributesSerialize"></BinaryString>
+			<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+			<string name="Name">ServiceVisibilityService</string>
+			<int64 name="SourceAssetId">-1</int64>
+			<BinaryString name="Tags"></BinaryString>
+			<UniqueId name="UniqueId">251140ca871f282904b531490000344f</UniqueId>
+			<BinaryString name="VisibleServices">AAAAAA==</BinaryString>
+		</Properties>
 	</Item>
 	<Item class="Teams" referent="RBX6FC8DB50DBAF46EE89B21EEFBABE2B3B">
 		<Properties>
@@ -9459,16 +9482,6 @@ bGUDAQ==]]></BinaryString>
 			<UniqueId name="UniqueId">23b37283eb522f4a0462ef1500013f8b</UniqueId>
 		</Properties>
 	</Item>
-	<Item class="LodDataService" referent="RBX13D5E0E79DAC40EB8A9E08E4D5EA722C">
-		<Properties>
-			<BinaryString name="AttributesSerialize"></BinaryString>
-			<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-			<string name="Name">Instance</string>
-			<int64 name="SourceAssetId">-1</int64>
-			<BinaryString name="Tags"></BinaryString>
-			<UniqueId name="UniqueId">44b188dace632b4702e9c68d004830d0</UniqueId>
-		</Properties>
-	</Item>
 	<Item class="VoiceChatService" referent="RBX29DF0DFA35F646F2A521A3D26EDF7377">
 		<Properties>
 			<BinaryString name="AttributesSerialize"></BinaryString>
@@ -9490,17 +9503,6 @@ bGUDAQ==]]></BinaryString>
 			<int64 name="SourceAssetId">-1</int64>
 			<BinaryString name="Tags"></BinaryString>
 			<UniqueId name="UniqueId">44b188dace632b4702e9c68d004831fc</UniqueId>
-		</Properties>
-	</Item>
-	<Item class="ServiceVisibilityService" referent="RBXDFEE36B2E53D43F883900115E81E18B8">
-		<Properties>
-			<BinaryString name="AttributesSerialize"></BinaryString>
-			<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
-			<string name="Name">ServiceVisibilityService</string>
-			<int64 name="SourceAssetId">-1</int64>
-			<BinaryString name="Tags"></BinaryString>
-			<UniqueId name="UniqueId">251140ca871f282904b531490000344f</UniqueId>
-			<BinaryString name="VisibleServices">AAAAAA==</BinaryString>
 		</Properties>
 	</Item>
 	<Item class="VirtualInputManager" referent="RBXBB34B65EA3A948F38457AFCAF5832ECC">
