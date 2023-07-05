@@ -28,6 +28,11 @@ function module.new(npc: Model)
 		local t = 0
 		while self and self.humanoid do
 			t += RunService.Heartbeat:Wait()
+
+			local npcCFrameAndVelocity = {
+				CFrame = self.model:GetPivot(),
+				Velocity = self.rootPart.AssemblyLinearVelocity
+			}
 			
 			local interests = {} :: {{number}}
 			-- table.insert(
@@ -53,33 +58,24 @@ function module.new(npc: Model)
 			table.insert(
 				interests, 
 				Behaviors.PursueIterative(
-					{
-						CFrame = self.model:GetPivot(),
-						Velocity = self.rootPart.AssemblyLinearVelocity
-					}, 
+					npcCFrameAndVelocity, 
 					InfoGetters.GetPlayerCFramesAndVelocities(),
-					BehaviorParams.NewGenericParams(
-						{
-							--Resolution = 23,
-							--RangeMin = 10,
-							--RangeMax = 30,
-							--InterestMax = 0.5,
-							--InterestConeArcDegrees = 90,
-							--DistanceFalloffStart = 10,
-							--DistanceFalloffEnd = 40,
-							--DirectionModifierWeightForward = 1,
-							--DirectionModifierWeightRight = 4,
-						}
-					)
+					BehaviorParams.NewGenericParams()
 				)
 			)
 			
 			-- TODO using mock danger map, add danger sensing behavior and test if danger masking works
 			local dangers = {}
-			table.insert(dangers, Behaviors.ConstantMap(#interests[1], 0))
+			table.insert(
+				dangers,
+				Behaviors.ConstantMap(#interests[1], 0) 
+				-- Behaviors.Avoid(
+				-- 	npcCFrameAndVelocity,
+				-- 	InfoGetters.GetTaggedCFramesAndVelocities("Danger"),
+				-- 	BehaviorParams.NewGenericParams()
+				-- )
+			)
 			
-			local combinedInterest = ContextSteering.Combine(interests)
-			local combinedDanger = ContextSteering.Combine(dangers)
 			local moveDirection, moveInterest = 
 				ContextSteering.CalculateMovement(
 					ContextSteering.Mask(
