@@ -19,6 +19,7 @@ Short version:
         - Behaviors return information instead of decisions. Only one decision is made at the end.
         - This stops behaviors from canceling each other out. 
     - Context maps are combined in a non-additive manner: Only the strongest (most important) interest and danger information in each direction is kept.
+        - You could use a different combining function to get different behavior.
     - The combined context map is used to make a movement decision.
     - NPCs hate danger. An NPC won't move in a direction if it's more dangerous than another direction.
         - Because nearby directions also become interesting or dangerous, this causes NPCs to move around the danger, taking a safer (better) path that eventually leads to the target.
