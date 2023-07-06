@@ -7674,27 +7674,27 @@ end
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>-21.0087013</X>
-					<Y>21.8769569</Y>
-					<Z>-8.61121941</Z>
-					<R00>-0.125352085</R00>
-					<R01>0.477441788</R01>
-					<R02>-0.869675934</R02>
+					<X>60.4376945</X>
+					<Y>10.451437</Y>
+					<Z>-0.00454318523</Z>
+					<R00>-0.9978019</R00>
+					<R01>0.0504991114</R01>
+					<R02>-0.0429114923</R02>
 					<R10>-0</R10>
-					<R11>0.876590252</R11>
-					<R12>0.48123759</R12>
-					<R20>0.992112398</R20>
-					<R21>0.0603241362</R21>
-					<R22>-0.109882392</R22>
+					<R11>0.647536755</R11>
+					<R12>0.762034237</R12>
+					<R20>0.066268824</R20>
+					<R21>0.760359228</R21>
+					<R22>-0.646113276</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>-19.2693501</X>
-					<Y>20.9144821</Y>
-					<Z>-8.3914547</Z>
+					<X>60.5235176</X>
+					<Y>8.92736721</Y>
+					<Z>1.28768444</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -7714,6 +7714,1094 @@ end
 				<UniqueId name="UniqueId">251140ca871f282904b5314900003450</UniqueId>
 				<bool name="VRTiltAndRollEnabled">false</bool>
 			</Properties>
+		</Item>
+		<Item class="Model" referent="RBXE741DE4AA2984EB29FE9AF72A7D88058">
+			<Properties>
+				<BinaryString name="AttributesSerialize">AQAAAAgAAABTcGVlZE1heAYAAAAAAABUQA==</BinaryString>
+				<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+				<token name="LevelOfDetail">0</token>
+				<CoordinateFrame name="ModelMeshCFrame">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<SharedString name="ModelMeshData">yuZpQdnvvUBOTYh1jqZ2cA==</SharedString>
+				<Vector3 name="ModelMeshSize">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<token name="ModelStreamingMode">0</token>
+				<string name="Name">Missile</string>
+				<bool name="NeedsPivotMigration">false</bool>
+				<Ref name="PrimaryPart">RBXC29144FF7C13477AA87FFE299FDB1D2D</Ref>
+				<float name="ScaleFactor">1</float>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags">SG9taW5nUHJvamVjdGlsZQ==</BinaryString>
+				<UniqueId name="UniqueId">32e0a93482e2633604b79416000038dd</UniqueId>
+				<OptionalCoordinateFrame name="WorldPivotData">
+					<CFrame>
+						<X>62</X>
+						<Y>3</Y>
+						<Z>7</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CFrame>
+				</OptionalCoordinateFrame>
+			</Properties>
+			<Item class="Part" referent="RBXC29144FF7C13477AA87FFE299FDB1D2D">
+				<Properties>
+					<bool name="Anchored">false</bool>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<float name="BackParamA">-0.5</float>
+					<float name="BackParamB">0.5</float>
+					<token name="BackSurface">0</token>
+					<token name="BackSurfaceInput">0</token>
+					<float name="BottomParamA">-0.5</float>
+					<float name="BottomParamB">0.5</float>
+					<token name="BottomSurface">0</token>
+					<token name="BottomSurfaceInput">0</token>
+					<CoordinateFrame name="CFrame">
+						<X>62</X>
+						<Y>3</Y>
+						<Z>7</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<bool name="CanCollide">false</bool>
+					<bool name="CanQuery">false</bool>
+					<bool name="CanTouch">false</bool>
+					<bool name="CastShadow">true</bool>
+					<string name="CollisionGroup">Default</string>
+					<int name="CollisionGroupId">0</int>
+					<Color3uint8 name="Color3uint8">4288914085</Color3uint8>
+					<PhysicalProperties name="CustomPhysicalProperties">
+						<CustomPhysics>false</CustomPhysics>
+					</PhysicalProperties>
+					<bool name="EnableFluidForces">false</bool>
+					<float name="FrontParamA">-0.5</float>
+					<float name="FrontParamB">0.5</float>
+					<token name="FrontSurface">0</token>
+					<token name="FrontSurfaceInput">0</token>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<float name="LeftParamA">-0.5</float>
+					<float name="LeftParamB">0.5</float>
+					<token name="LeftSurface">0</token>
+					<token name="LeftSurfaceInput">0</token>
+					<bool name="Locked">false</bool>
+					<bool name="Massless">true</bool>
+					<token name="Material">256</token>
+					<string name="MaterialVariantSerialized"></string>
+					<string name="Name">Body</string>
+					<CoordinateFrame name="PivotOffset">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<float name="Reflectance">0</float>
+					<float name="RightParamA">-0.5</float>
+					<float name="RightParamB">0.5</float>
+					<token name="RightSurface">0</token>
+					<token name="RightSurfaceInput">0</token>
+					<int name="RootPriority">0</int>
+					<Vector3 name="RotVelocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<float name="TopParamA">-0.5</float>
+					<float name="TopParamB">0.5</float>
+					<token name="TopSurface">0</token>
+					<token name="TopSurfaceInput">0</token>
+					<float name="Transparency">0</float>
+					<UniqueId name="UniqueId">32e0a93482e2633604b7941600004664</UniqueId>
+					<Vector3 name="Velocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<token name="formFactorRaw">1</token>
+					<token name="shape">2</token>
+					<Vector3 name="size">
+						<X>6</X>
+						<Y>2</Y>
+						<Z>2</Z>
+					</Vector3>
+				</Properties>
+				<Item class="WeldConstraint" referent="RBXE1FB2432904041549C71FBF0A332E12E">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<CoordinateFrame name="CFrame0">
+							<X>2.5</X>
+							<Y>0</Y>
+							<Z>1.50000095</Z>
+							<R00>0</R00>
+							<R01>4.37113883e-08</R01>
+							<R02>1</R02>
+							<R10>1</R10>
+							<R11>0</R11>
+							<R12>0</R12>
+							<R20>0</R20>
+							<R21>1</R21>
+							<R22>-4.37113883e-08</R22>
+						</CoordinateFrame>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">WeldConstraint</string>
+						<Ref name="Part0Internal">RBXC29144FF7C13477AA87FFE299FDB1D2D</Ref>
+						<Ref name="Part1Internal">RBX17E30628074E42009A1C933D8B9F9007</Ref>
+						<int64 name="SourceAssetId">-1</int64>
+						<int name="State">3</int>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">32e0a93482e2633604b794160000466f</UniqueId>
+					</Properties>
+				</Item>
+				<Item class="WeldConstraint" referent="RBXBAC1326EC0FF4F919C22FD5385AF747D">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<CoordinateFrame name="CFrame0">
+							<X>2.5</X>
+							<Y>1.5</Y>
+							<Z>0</Z>
+							<R00>-4.37113883e-08</R00>
+							<R01>0</R01>
+							<R02>1</R02>
+							<R10>0</R10>
+							<R11>1</R11>
+							<R12>0</R12>
+							<R20>-1</R20>
+							<R21>0</R21>
+							<R22>-4.37113883e-08</R22>
+						</CoordinateFrame>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">WeldConstraint</string>
+						<Ref name="Part0Internal">RBXC29144FF7C13477AA87FFE299FDB1D2D</Ref>
+						<Ref name="Part1Internal">RBXA57AFAB028E742D7B813856A1D3229DC</Ref>
+						<int64 name="SourceAssetId">-1</int64>
+						<int name="State">3</int>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">32e0a93482e2633604b7941600004670</UniqueId>
+					</Properties>
+				</Item>
+				<Item class="WeldConstraint" referent="RBX577EE01CF17A4FA6AE4F4B40AD637904">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<CoordinateFrame name="CFrame0">
+							<X>2.5</X>
+							<Y>-1.5</Y>
+							<Z>0</Z>
+							<R00>4.37113883e-08</R00>
+							<R01>0</R01>
+							<R02>1</R02>
+							<R10>0</R10>
+							<R11>-1</R11>
+							<R12>0</R12>
+							<R20>1</R20>
+							<R21>0</R21>
+							<R22>-4.37113883e-08</R22>
+						</CoordinateFrame>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">WeldConstraint</string>
+						<Ref name="Part0Internal">RBXC29144FF7C13477AA87FFE299FDB1D2D</Ref>
+						<Ref name="Part1Internal">RBX87F0349BDD694416B6DD692E30D50C2C</Ref>
+						<int64 name="SourceAssetId">-1</int64>
+						<int name="State">3</int>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">32e0a93482e2633604b7941600004671</UniqueId>
+					</Properties>
+				</Item>
+				<Item class="WeldConstraint" referent="RBX602EBC56B1F641FF848B0D8BB8B3D341">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<CoordinateFrame name="CFrame0">
+							<X>-3</X>
+							<Y>0</Y>
+							<Z>0</Z>
+							<R00>1</R00>
+							<R01>0</R01>
+							<R02>0</R02>
+							<R10>0</R10>
+							<R11>1</R11>
+							<R12>0</R12>
+							<R20>0</R20>
+							<R21>0</R21>
+							<R22>1</R22>
+						</CoordinateFrame>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">WeldConstraint</string>
+						<Ref name="Part0Internal">RBXC29144FF7C13477AA87FFE299FDB1D2D</Ref>
+						<Ref name="Part1Internal">RBX4816796D3D784D2AA9568A73625D4B02</Ref>
+						<int64 name="SourceAssetId">-1</int64>
+						<int name="State">3</int>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">32e0a93482e2633604b7941600004672</UniqueId>
+					</Properties>
+				</Item>
+				<Item class="WeldConstraint" referent="RBXAE78584ECF2A49E8A4BD0423D0707EA8">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<CoordinateFrame name="CFrame0">
+							<X>0</X>
+							<Y>-1.49999952</Y>
+							<Z>-2.5</Z>
+							<R00>0</R00>
+							<R01>-1</R01>
+							<R02>0</R02>
+							<R10>-4.37113883e-08</R10>
+							<R11>0</R11>
+							<R12>-1</R12>
+							<R20>1</R20>
+							<R21>0</R21>
+							<R22>-4.37113883e-08</R22>
+						</CoordinateFrame>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">WeldConstraint</string>
+						<Ref name="Part0Internal">RBX0BBC2230965B4F6B950B2D6B52B9E8DB</Ref>
+						<Ref name="Part1Internal">RBXC29144FF7C13477AA87FFE299FDB1D2D</Ref>
+						<int64 name="SourceAssetId">-1</int64>
+						<int name="State">3</int>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">32e0a93482e2633604b794160000466e</UniqueId>
+					</Properties>
+				</Item>
+				<Item class="Attachment" referent="RBXB9B4B18A347044A6BCD8F4271F60C555">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<CoordinateFrame name="CFrame">
+							<X>3</X>
+							<Y>0</Y>
+							<Z>0</Z>
+							<R00>1</R00>
+							<R01>0</R01>
+							<R02>0</R02>
+							<R10>0</R10>
+							<R11>1</R11>
+							<R12>0</R12>
+							<R20>0</R20>
+							<R21>0</R21>
+							<R22>1</R22>
+						</CoordinateFrame>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">ParticleAttachment</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">32e0a93482e2633604b7941600004661</UniqueId>
+						<bool name="Visible">false</bool>
+					</Properties>
+					<Item class="Smoke" referent="RBX9863773ECBE04C85AFC17558B8505E12">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<Color3 name="Color">
+								<R>1</R>
+								<G>1</G>
+								<B>1</B>
+							</Color3>
+							<bool name="Enabled">true</bool>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<string name="Name">Smoke</string>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<float name="TimeScale">1</float>
+							<UniqueId name="UniqueId">32e0a93482e2633604b7941600004662</UniqueId>
+							<float name="opacity_xml">0.5</float>
+							<float name="riseVelocity_xml">1</float>
+							<float name="size_xml">0.200000003</float>
+						</Properties>
+					</Item>
+					<Item class="Fire" referent="RBXF28C5E9D22DF4342A344F4F75E722E72">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<Color3 name="Color">
+								<R>0.92549026</R>
+								<G>0.545098066</G>
+								<B>0.274509817</B>
+							</Color3>
+							<bool name="Enabled">true</bool>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<string name="Name">Fire</string>
+							<Color3 name="SecondaryColor">
+								<R>0.545098066</R>
+								<G>0.313725501</G>
+								<B>0.215686291</B>
+							</Color3>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<float name="TimeScale">1</float>
+							<UniqueId name="UniqueId">32e0a93482e2633604b7941600004663</UniqueId>
+							<float name="heat_xml">3</float>
+							<float name="size_xml">5</float>
+						</Properties>
+					</Item>
+				</Item>
+			</Item>
+			<Item class="Part" referent="RBX87F0349BDD694416B6DD692E30D50C2C">
+				<Properties>
+					<bool name="Anchored">false</bool>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<float name="BackParamA">-0.5</float>
+					<float name="BackParamB">0.5</float>
+					<token name="BackSurface">0</token>
+					<token name="BackSurfaceInput">0</token>
+					<float name="BottomParamA">-0.5</float>
+					<float name="BottomParamB">0.5</float>
+					<token name="BottomSurface">0</token>
+					<token name="BottomSurfaceInput">0</token>
+					<CoordinateFrame name="CFrame">
+						<X>64.5</X>
+						<Y>1.5</Y>
+						<Z>7</Z>
+						<R00>4.37113883e-08</R00>
+						<R01>0</R01>
+						<R02>1</R02>
+						<R10>0</R10>
+						<R11>-1</R11>
+						<R12>0</R12>
+						<R20>1</R20>
+						<R21>0</R21>
+						<R22>-4.37113883e-08</R22>
+					</CoordinateFrame>
+					<bool name="CanCollide">false</bool>
+					<bool name="CanQuery">false</bool>
+					<bool name="CanTouch">false</bool>
+					<bool name="CastShadow">true</bool>
+					<string name="CollisionGroup">Default</string>
+					<int name="CollisionGroupId">0</int>
+					<Color3uint8 name="Color3uint8">4294901760</Color3uint8>
+					<PhysicalProperties name="CustomPhysicalProperties">
+						<CustomPhysics>false</CustomPhysics>
+					</PhysicalProperties>
+					<bool name="EnableFluidForces">false</bool>
+					<float name="FrontParamA">-0.5</float>
+					<float name="FrontParamB">0.5</float>
+					<token name="FrontSurface">0</token>
+					<token name="FrontSurfaceInput">0</token>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<float name="LeftParamA">-0.5</float>
+					<float name="LeftParamB">0.5</float>
+					<token name="LeftSurface">0</token>
+					<token name="LeftSurfaceInput">0</token>
+					<bool name="Locked">false</bool>
+					<bool name="Massless">true</bool>
+					<token name="Material">256</token>
+					<string name="MaterialVariantSerialized"></string>
+					<string name="Name">Fin</string>
+					<CoordinateFrame name="PivotOffset">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<float name="Reflectance">0</float>
+					<float name="RightParamA">-0.5</float>
+					<float name="RightParamB">0.5</float>
+					<token name="RightSurface">0</token>
+					<token name="RightSurfaceInput">0</token>
+					<int name="RootPriority">0</int>
+					<Vector3 name="RotVelocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<float name="TopParamA">-0.5</float>
+					<float name="TopParamB">0.5</float>
+					<token name="TopSurface">0</token>
+					<token name="TopSurfaceInput">0</token>
+					<float name="Transparency">0</float>
+					<UniqueId name="UniqueId">32e0a93482e2633604b7941600004665</UniqueId>
+					<Vector3 name="Velocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<token name="formFactorRaw">1</token>
+					<token name="shape">3</token>
+					<Vector3 name="size">
+						<X>0.5</X>
+						<Y>1</Y>
+						<Z>2</Z>
+					</Vector3>
+				</Properties>
+			</Item>
+			<Item class="Part" referent="RBX0BBC2230965B4F6B950B2D6B52B9E8DB">
+				<Properties>
+					<bool name="Anchored">false</bool>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<float name="BackParamA">-0.5</float>
+					<float name="BackParamB">0.5</float>
+					<token name="BackSurface">0</token>
+					<token name="BackSurfaceInput">0</token>
+					<float name="BottomParamA">-0.5</float>
+					<float name="BottomParamB">0.5</float>
+					<token name="BottomSurface">0</token>
+					<token name="BottomSurfaceInput">0</token>
+					<CoordinateFrame name="CFrame">
+						<X>64.5</X>
+						<Y>3</Y>
+						<Z>5.50000048</Z>
+						<R00>0</R00>
+						<R01>-4.37113883e-08</R01>
+						<R02>1</R02>
+						<R10>-1</R10>
+						<R11>0</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>-1</R21>
+						<R22>-4.37113883e-08</R22>
+					</CoordinateFrame>
+					<bool name="CanCollide">false</bool>
+					<bool name="CanQuery">false</bool>
+					<bool name="CanTouch">false</bool>
+					<bool name="CastShadow">true</bool>
+					<string name="CollisionGroup">Default</string>
+					<int name="CollisionGroupId">0</int>
+					<Color3uint8 name="Color3uint8">4294901760</Color3uint8>
+					<PhysicalProperties name="CustomPhysicalProperties">
+						<CustomPhysics>false</CustomPhysics>
+					</PhysicalProperties>
+					<bool name="EnableFluidForces">false</bool>
+					<float name="FrontParamA">-0.5</float>
+					<float name="FrontParamB">0.5</float>
+					<token name="FrontSurface">0</token>
+					<token name="FrontSurfaceInput">0</token>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<float name="LeftParamA">-0.5</float>
+					<float name="LeftParamB">0.5</float>
+					<token name="LeftSurface">0</token>
+					<token name="LeftSurfaceInput">0</token>
+					<bool name="Locked">false</bool>
+					<bool name="Massless">true</bool>
+					<token name="Material">256</token>
+					<string name="MaterialVariantSerialized"></string>
+					<string name="Name">Fin</string>
+					<CoordinateFrame name="PivotOffset">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<float name="Reflectance">0</float>
+					<float name="RightParamA">-0.5</float>
+					<float name="RightParamB">0.5</float>
+					<token name="RightSurface">0</token>
+					<token name="RightSurfaceInput">0</token>
+					<int name="RootPriority">0</int>
+					<Vector3 name="RotVelocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<float name="TopParamA">-0.5</float>
+					<float name="TopParamB">0.5</float>
+					<token name="TopSurface">0</token>
+					<token name="TopSurfaceInput">0</token>
+					<float name="Transparency">0</float>
+					<UniqueId name="UniqueId">32e0a93482e2633604b7941600004666</UniqueId>
+					<Vector3 name="Velocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<token name="formFactorRaw">1</token>
+					<token name="shape">3</token>
+					<Vector3 name="size">
+						<X>0.5</X>
+						<Y>1</Y>
+						<Z>2</Z>
+					</Vector3>
+				</Properties>
+			</Item>
+			<Item class="Part" referent="RBX17E30628074E42009A1C933D8B9F9007">
+				<Properties>
+					<bool name="Anchored">false</bool>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<float name="BackParamA">-0.5</float>
+					<float name="BackParamB">0.5</float>
+					<token name="BackSurface">0</token>
+					<token name="BackSurfaceInput">0</token>
+					<float name="BottomParamA">-0.5</float>
+					<float name="BottomParamB">0.5</float>
+					<token name="BottomSurface">0</token>
+					<token name="BottomSurfaceInput">0</token>
+					<CoordinateFrame name="CFrame">
+						<X>64.5</X>
+						<Y>3</Y>
+						<Z>8.50000095</Z>
+						<R00>0</R00>
+						<R01>4.37113883e-08</R01>
+						<R02>1</R02>
+						<R10>1</R10>
+						<R11>0</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>1</R21>
+						<R22>-4.37113883e-08</R22>
+					</CoordinateFrame>
+					<bool name="CanCollide">false</bool>
+					<bool name="CanQuery">false</bool>
+					<bool name="CanTouch">false</bool>
+					<bool name="CastShadow">true</bool>
+					<string name="CollisionGroup">Default</string>
+					<int name="CollisionGroupId">0</int>
+					<Color3uint8 name="Color3uint8">4294901760</Color3uint8>
+					<PhysicalProperties name="CustomPhysicalProperties">
+						<CustomPhysics>false</CustomPhysics>
+					</PhysicalProperties>
+					<bool name="EnableFluidForces">false</bool>
+					<float name="FrontParamA">-0.5</float>
+					<float name="FrontParamB">0.5</float>
+					<token name="FrontSurface">0</token>
+					<token name="FrontSurfaceInput">0</token>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<float name="LeftParamA">-0.5</float>
+					<float name="LeftParamB">0.5</float>
+					<token name="LeftSurface">0</token>
+					<token name="LeftSurfaceInput">0</token>
+					<bool name="Locked">false</bool>
+					<bool name="Massless">true</bool>
+					<token name="Material">256</token>
+					<string name="MaterialVariantSerialized"></string>
+					<string name="Name">Fin</string>
+					<CoordinateFrame name="PivotOffset">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<float name="Reflectance">0</float>
+					<float name="RightParamA">-0.5</float>
+					<float name="RightParamB">0.5</float>
+					<token name="RightSurface">0</token>
+					<token name="RightSurfaceInput">0</token>
+					<int name="RootPriority">0</int>
+					<Vector3 name="RotVelocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<float name="TopParamA">-0.5</float>
+					<float name="TopParamB">0.5</float>
+					<token name="TopSurface">0</token>
+					<token name="TopSurfaceInput">0</token>
+					<float name="Transparency">0</float>
+					<UniqueId name="UniqueId">32e0a93482e2633604b7941600004667</UniqueId>
+					<Vector3 name="Velocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<token name="formFactorRaw">1</token>
+					<token name="shape">3</token>
+					<Vector3 name="size">
+						<X>0.5</X>
+						<Y>1</Y>
+						<Z>2</Z>
+					</Vector3>
+				</Properties>
+			</Item>
+			<Item class="Part" referent="RBXA57AFAB028E742D7B813856A1D3229DC">
+				<Properties>
+					<bool name="Anchored">false</bool>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<float name="BackParamA">-0.5</float>
+					<float name="BackParamB">0.5</float>
+					<token name="BackSurface">0</token>
+					<token name="BackSurfaceInput">0</token>
+					<float name="BottomParamA">-0.5</float>
+					<float name="BottomParamB">0.5</float>
+					<token name="BottomSurface">0</token>
+					<token name="BottomSurfaceInput">0</token>
+					<CoordinateFrame name="CFrame">
+						<X>64.5</X>
+						<Y>4.5</Y>
+						<Z>7</Z>
+						<R00>-4.37113883e-08</R00>
+						<R01>0</R01>
+						<R02>1</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>-1</R20>
+						<R21>0</R21>
+						<R22>-4.37113883e-08</R22>
+					</CoordinateFrame>
+					<bool name="CanCollide">false</bool>
+					<bool name="CanQuery">false</bool>
+					<bool name="CanTouch">false</bool>
+					<bool name="CastShadow">true</bool>
+					<string name="CollisionGroup">Default</string>
+					<int name="CollisionGroupId">0</int>
+					<Color3uint8 name="Color3uint8">4294901760</Color3uint8>
+					<PhysicalProperties name="CustomPhysicalProperties">
+						<CustomPhysics>false</CustomPhysics>
+					</PhysicalProperties>
+					<bool name="EnableFluidForces">false</bool>
+					<float name="FrontParamA">-0.5</float>
+					<float name="FrontParamB">0.5</float>
+					<token name="FrontSurface">0</token>
+					<token name="FrontSurfaceInput">0</token>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<float name="LeftParamA">-0.5</float>
+					<float name="LeftParamB">0.5</float>
+					<token name="LeftSurface">0</token>
+					<token name="LeftSurfaceInput">0</token>
+					<bool name="Locked">false</bool>
+					<bool name="Massless">true</bool>
+					<token name="Material">256</token>
+					<string name="MaterialVariantSerialized"></string>
+					<string name="Name">Fin</string>
+					<CoordinateFrame name="PivotOffset">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<float name="Reflectance">0</float>
+					<float name="RightParamA">-0.5</float>
+					<float name="RightParamB">0.5</float>
+					<token name="RightSurface">0</token>
+					<token name="RightSurfaceInput">0</token>
+					<int name="RootPriority">0</int>
+					<Vector3 name="RotVelocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<float name="TopParamA">-0.5</float>
+					<float name="TopParamB">0.5</float>
+					<token name="TopSurface">0</token>
+					<token name="TopSurfaceInput">0</token>
+					<float name="Transparency">0</float>
+					<UniqueId name="UniqueId">32e0a93482e2633604b7941600004668</UniqueId>
+					<Vector3 name="Velocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<token name="formFactorRaw">1</token>
+					<token name="shape">3</token>
+					<Vector3 name="size">
+						<X>0.5</X>
+						<Y>1</Y>
+						<Z>2</Z>
+					</Vector3>
+				</Properties>
+			</Item>
+			<Item class="Part" referent="RBX4816796D3D784D2AA9568A73625D4B02">
+				<Properties>
+					<bool name="Anchored">false</bool>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<float name="BackParamA">-0.5</float>
+					<float name="BackParamB">0.5</float>
+					<token name="BackSurface">0</token>
+					<token name="BackSurfaceInput">0</token>
+					<float name="BottomParamA">-0.5</float>
+					<float name="BottomParamB">0.5</float>
+					<token name="BottomSurface">0</token>
+					<token name="BottomSurfaceInput">0</token>
+					<CoordinateFrame name="CFrame">
+						<X>59</X>
+						<Y>3</Y>
+						<Z>7</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<bool name="CanCollide">false</bool>
+					<bool name="CanQuery">false</bool>
+					<bool name="CanTouch">false</bool>
+					<bool name="CastShadow">true</bool>
+					<string name="CollisionGroup">Default</string>
+					<int name="CollisionGroupId">0</int>
+					<Color3uint8 name="Color3uint8">4294901760</Color3uint8>
+					<PhysicalProperties name="CustomPhysicalProperties">
+						<CustomPhysics>false</CustomPhysics>
+					</PhysicalProperties>
+					<bool name="EnableFluidForces">false</bool>
+					<float name="FrontParamA">-0.5</float>
+					<float name="FrontParamB">0.5</float>
+					<token name="FrontSurface">0</token>
+					<token name="FrontSurfaceInput">0</token>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<float name="LeftParamA">-0.5</float>
+					<float name="LeftParamB">0.5</float>
+					<token name="LeftSurface">0</token>
+					<token name="LeftSurfaceInput">0</token>
+					<bool name="Locked">false</bool>
+					<bool name="Massless">true</bool>
+					<token name="Material">256</token>
+					<string name="MaterialVariantSerialized"></string>
+					<string name="Name">Nose</string>
+					<CoordinateFrame name="PivotOffset">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<float name="Reflectance">0</float>
+					<float name="RightParamA">-0.5</float>
+					<float name="RightParamB">0.5</float>
+					<token name="RightSurface">0</token>
+					<token name="RightSurfaceInput">0</token>
+					<int name="RootPriority">0</int>
+					<Vector3 name="RotVelocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<float name="TopParamA">-0.5</float>
+					<float name="TopParamB">0.5</float>
+					<token name="TopSurface">0</token>
+					<token name="TopSurfaceInput">0</token>
+					<float name="Transparency">0</float>
+					<UniqueId name="UniqueId">32e0a93482e2633604b7941600004669</UniqueId>
+					<Vector3 name="Velocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<token name="formFactorRaw">1</token>
+					<token name="shape">0</token>
+					<Vector3 name="size">
+						<X>2</X>
+						<Y>2</Y>
+						<Z>2</Z>
+					</Vector3>
+				</Properties>
+			</Item>
+			<Item class="Part" referent="RBX139C9E98EF7548F5B84CB080989A9893">
+				<Properties>
+					<bool name="Anchored">false</bool>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<float name="BackParamA">-0.5</float>
+					<float name="BackParamB">0.5</float>
+					<token name="BackSurface">0</token>
+					<token name="BackSurfaceInput">0</token>
+					<float name="BottomParamA">-0.5</float>
+					<float name="BottomParamB">0.5</float>
+					<token name="BottomSurface">0</token>
+					<token name="BottomSurfaceInput">0</token>
+					<CoordinateFrame name="CFrame">
+						<X>62</X>
+						<Y>3</Y>
+						<Z>7</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<bool name="CanCollide">true</bool>
+					<bool name="CanQuery">true</bool>
+					<bool name="CanTouch">true</bool>
+					<bool name="CastShadow">true</bool>
+					<string name="CollisionGroup">Default</string>
+					<int name="CollisionGroupId">0</int>
+					<Color3uint8 name="Color3uint8">4294901760</Color3uint8>
+					<PhysicalProperties name="CustomPhysicalProperties">
+						<CustomPhysics>true</CustomPhysics>
+						<Density>1.5</Density>
+						<Friction>0.300000012</Friction>
+						<Elasticity>0</Elasticity>
+						<FrictionWeight>1</FrictionWeight>
+						<ElasticityWeight>100</ElasticityWeight>
+					</PhysicalProperties>
+					<bool name="EnableFluidForces">false</bool>
+					<float name="FrontParamA">-0.5</float>
+					<float name="FrontParamB">0.5</float>
+					<token name="FrontSurface">0</token>
+					<token name="FrontSurfaceInput">0</token>
+					<UniqueId name="HistoryId">32e0a93482e2633604b7941600004664</UniqueId>
+					<float name="LeftParamA">-0.5</float>
+					<float name="LeftParamB">0.5</float>
+					<token name="LeftSurface">0</token>
+					<token name="LeftSurfaceInput">0</token>
+					<bool name="Locked">false</bool>
+					<bool name="Massless">false</bool>
+					<token name="Material">288</token>
+					<string name="MaterialVariantSerialized"></string>
+					<string name="Name">Hitbox</string>
+					<CoordinateFrame name="PivotOffset">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<float name="Reflectance">0</float>
+					<float name="RightParamA">-0.5</float>
+					<float name="RightParamB">0.5</float>
+					<token name="RightSurface">0</token>
+					<token name="RightSurfaceInput">0</token>
+					<int name="RootPriority">0</int>
+					<Vector3 name="RotVelocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<float name="TopParamA">-0.5</float>
+					<float name="TopParamB">0.5</float>
+					<token name="TopSurface">0</token>
+					<token name="TopSurfaceInput">0</token>
+					<float name="Transparency">0.5</float>
+					<UniqueId name="UniqueId">32e0a93482e2633604b79416000046d7</UniqueId>
+					<Vector3 name="Velocity">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<token name="formFactorRaw">1</token>
+					<token name="shape">0</token>
+					<Vector3 name="size">
+						<X>4</X>
+						<Y>4</Y>
+						<Z>4</Z>
+					</Vector3>
+				</Properties>
+				<Item class="WeldConstraint" referent="RBX7CF11EB81F6A4065A2DAD17C259B76B5">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<CoordinateFrame name="CFrame0">
+							<X>0</X>
+							<Y>0</Y>
+							<Z>0</Z>
+							<R00>1</R00>
+							<R01>0</R01>
+							<R02>0</R02>
+							<R10>0</R10>
+							<R11>1</R11>
+							<R12>0</R12>
+							<R20>0</R20>
+							<R21>0</R21>
+							<R22>1</R22>
+						</CoordinateFrame>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">WeldConstraint</string>
+						<Ref name="Part0Internal">RBX139C9E98EF7548F5B84CB080989A9893</Ref>
+						<Ref name="Part1Internal">RBXC29144FF7C13477AA87FFE299FDB1D2D</Ref>
+						<int64 name="SourceAssetId">-1</int64>
+						<int name="State">3</int>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">32e0a93482e2633604b79416000048eb</UniqueId>
+					</Properties>
+				</Item>
+				<Item class="Attachment" referent="RBXB1496BA8B30A4793B25626EAF3FBEFCC">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<CoordinateFrame name="CFrame">
+							<X>0</X>
+							<Y>0</Y>
+							<Z>0</Z>
+							<R00>0</R00>
+							<R01>0</R01>
+							<R02>1</R02>
+							<R10>0</R10>
+							<R11>1</R11>
+							<R12>-0</R12>
+							<R20>-1</R20>
+							<R21>0</R21>
+							<R22>0</R22>
+						</CoordinateFrame>
+						<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+						<string name="Name">PhysicsAttachment</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<UniqueId name="UniqueId">32e0a93482e2633604b79416000049a8</UniqueId>
+						<bool name="Visible">false</bool>
+					</Properties>
+					<Item class="LinearVelocity" referent="RBX6391E92ADD6D46CBB50BA9F7B5E963FE">
+						<Properties>
+							<Ref name="Attachment0">RBXB1496BA8B30A4793B25626EAF3FBEFCC</Ref>
+							<Ref name="Attachment1">null</Ref>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<int name="Color">26</int>
+							<bool name="Enabled">true</bool>
+							<token name="ForceLimitMode">0</token>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<Vector3 name="LineDirection">
+								<X>1</X>
+								<Y>0</Y>
+								<Z>0</Z>
+							</Vector3>
+							<float name="LineVelocity">-0</float>
+							<Vector3 name="MaxAxesForce">
+								<X>1000</X>
+								<Y>1000</Y>
+								<Z>1000</Z>
+							</Vector3>
+							<float name="MaxForce">10000</float>
+							<Vector2 name="MaxPlanarAxesForce">
+								<X>1000</X>
+								<Y>1000</Y>
+							</Vector2>
+							<string name="Name">LinearVelocity</string>
+							<Vector2 name="PlaneVelocity">
+								<X>0</X>
+								<Y>0</Y>
+							</Vector2>
+							<Vector3 name="PrimaryTangentAxis">
+								<X>1</X>
+								<Y>0</Y>
+								<Z>0</Z>
+							</Vector3>
+							<token name="RelativeTo">0</token>
+							<Vector3 name="SecondaryTangentAxis">
+								<X>0</X>
+								<Y>1</Y>
+								<Z>0</Z>
+							</Vector3>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">32e0a93482e2633604b79416000049c9</UniqueId>
+							<Vector3 name="VectorVelocity">
+								<X>0</X>
+								<Y>0</Y>
+								<Z>-1</Z>
+							</Vector3>
+							<token name="VelocityConstraintMode">2</token>
+							<bool name="Visible">false</bool>
+						</Properties>
+					</Item>
+					<Item class="AlignOrientation" referent="RBX2D8A144E589B41C98A28CBC452038CC3">
+						<Properties>
+							<token name="AlignType">0</token>
+							<Ref name="Attachment0">RBXB1496BA8B30A4793B25626EAF3FBEFCC</Ref>
+							<Ref name="Attachment1">null</Ref>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<CoordinateFrame name="CFrame">
+								<X>0</X>
+								<Y>0</Y>
+								<Z>0</Z>
+								<R00>1</R00>
+								<R01>0</R01>
+								<R02>0</R02>
+								<R10>0</R10>
+								<R11>1</R11>
+								<R12>0</R12>
+								<R20>0</R20>
+								<R21>0</R21>
+								<R22>1</R22>
+							</CoordinateFrame>
+							<int name="Color">23</int>
+							<bool name="Enabled">true</bool>
+							<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+							<float name="MaxAngularVelocity">INF</float>
+							<float name="MaxTorque">20000</float>
+							<token name="Mode">0</token>
+							<string name="Name">AlignOrientation</string>
+							<bool name="PrimaryAxisOnly">false</bool>
+							<bool name="ReactionTorqueEnabled">false</bool>
+							<float name="Responsiveness">20</float>
+							<bool name="RigidityEnabled">false</bool>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<UniqueId name="UniqueId">32e0a93482e2633604b7941600004ae1</UniqueId>
+							<bool name="Visible">false</bool>
+						</Properties>
+					</Item>
+				</Item>
+			</Item>
 		</Item>
 	</Item>
 	<Item class="TimerService" referent="RBX13D75C7BCB0C44EEB014EE1AF62DAE6B">
@@ -8269,6 +9357,11 @@ function module.new(npc: Model)
 		local t = 0
 		while self and self.humanoid do
 			t += RunService.Heartbeat:Wait()
+
+			local npcCFrameAndVelocity = {
+				CFrame = self.model:GetPivot(),
+				Velocity = self.rootPart.AssemblyLinearVelocity
+			}
 			
 			local interests = {} :: {{number}}
 			-- table.insert(
@@ -8293,34 +9386,25 @@ function module.new(npc: Model)
 			-- )
 			table.insert(
 				interests, 
-				Behaviors.PursueIterative(
-					{
-						CFrame = self.model:GetPivot(),
-						Velocity = self.rootPart.AssemblyLinearVelocity
-					}, 
+				Behaviors.Pursue(
+					npcCFrameAndVelocity, 
 					InfoGetters.GetPlayerCFramesAndVelocities(),
-					BehaviorParams.NewGenericParams(
-						{
-							--Resolution = 23,
-							--RangeMin = 10,
-							--RangeMax = 30,
-							--InterestMax = 0.5,
-							--InterestConeArcDegrees = 90,
-							--DistanceFalloffStart = 10,
-							--DistanceFalloffEnd = 40,
-							--DirectionModifierWeightForward = 1,
-							--DirectionModifierWeightRight = 4,
-						}
-					)
+					BehaviorParams.NewGenericParams()
 				)
 			)
 			
 			-- TODO using mock danger map, add danger sensing behavior and test if danger masking works
 			local dangers = {}
-			table.insert(dangers, Behaviors.ConstantMap(#interests[1], 0))
+			table.insert(
+				dangers,
+				Behaviors.ConstantMap(#interests[1], 0) 
+				-- Behaviors.Avoid(
+				-- 	npcCFrameAndVelocity,
+				-- 	InfoGetters.GetTaggedCFramesAndVelocities("Danger"),
+				-- 	BehaviorParams.NewGenericParams()
+				-- )
+			)
 			
-			local combinedInterest = ContextSteering.Combine(interests)
-			local combinedDanger = ContextSteering.Combine(dangers)
 			local moveDirection, moveInterest = 
 				ContextSteering.CalculateMovement(
 					ContextSteering.Mask(
@@ -8354,6 +9438,128 @@ return module
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
 					<UniqueId name="UniqueId">01b89c78d20fd8740478524700003b88</UniqueId>
+				</Properties>
+			</Item>
+			<Item class="ModuleScript" referent="RBXAC133BD084644A24B0A994DBDB93D7D7">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">HomingProjectile</string>
+					<string name="ScriptGuid">{A0F8E201-40B8-4578-B82B-EA7057861723}</string>
+					<ProtectedString name="Source"><![CDATA[--!strict
+local ServerScriptService = game:GetService("ServerScriptService")
+local RunService = game:GetService("RunService")
+
+local ContextSteering = require(ServerScriptService.ContextSteering)
+local Behaviors = require(ServerScriptService.ContextSteering.Behaviors)
+local BehaviorParams = require(ServerScriptService.ContextSteering.Behaviors.BehaviorParams)
+local InfoGetters = require(ServerScriptService.ContextSteering.InfoGetters)
+
+-- testing pursuit at higher speeds
+local module = {}
+
+function module.new(npc: Model)
+	local self = {
+		model = npc,
+		rootPart = (npc.PrimaryPart or npc:FindFirstChildWhichIsA("BasePart")) :: BasePart,
+		maxSpeed = npc:GetAttribute("SpeedMax"),
+        linearVelocity = npc:FindFirstChild("LinearVelocity", true) :: LinearVelocity,
+        alignOrientation = npc:FindFirstChild("AlignOrientation", true) :: AlignOrientation,
+	}
+	setmetatable(self, {__index = module})
+	
+	assert(self.rootPart, "HomingProjectile missing root part!")
+    assert(self.linearVelocity, "HomingProjectile missing LinearVelocity!")
+    assert(self.alignOrientation, "HomingProjectile missing AlignOrientation!")
+
+    self.linearVelocity.VectorVelocity = Vector3.new(0, 0, -self.maxSpeed)
+    self.alignOrientation.CFrame = CFrame.new(Vector3.new(), self.linearVelocity.VectorVelocity.Unit)
+	
+	task.spawn(function()
+		local t = 0
+		while self and self.model do
+			local dt = RunService.Heartbeat:Wait()
+            t += dt
+
+			local npcCFrameAndVelocity = {
+				CFrame = self.model:GetPivot(),
+				Velocity = self.rootPart.AssemblyLinearVelocity
+			}
+
+			local interests = {} :: {{number}}
+			table.insert(
+				interests,
+				Behaviors.Pursue(
+					npcCFrameAndVelocity,
+					InfoGetters.GetPlayerCFramesAndVelocities(),
+					BehaviorParams.NewGenericParams(
+                        {
+                            RangeMax = 2000
+                        }
+                    )
+				)
+			)
+            
+            local dangers = {Behaviors.ConstantMap(#interests[1], 0)}
+			
+			local moveDirection, moveInterest = 
+				ContextSteering.CalculateMovement(
+					ContextSteering.Mask(
+						ContextSteering.Combine(interests), 
+						ContextSteering.Combine(dangers)
+					)
+				)
+			
+			if moveInterest == 0 then
+                -- fly straight ahead: no change
+			else
+                -- fly towards movedir
+                self.alignOrientation.CFrame = CFrame.new(Vector3.new(), moveDirection)
+                DebugDrawBeam(self.rootPart.Position, self.rootPart.Position + moveDirection * 20)
+			end
+		end
+	end)
+	
+	return self
+end
+
+--[[
+function module.Destroy(npc: Instance)
+	
+end
+]]
+function DebugDrawBeam(start: Vector3, finish: Vector3, color: Color3?, lifetime: number?)
+	local _color = color or Color3.new(1, 0, 0)
+	local _lifetime = lifetime or 0.25
+	
+	local part = Instance.new("Part")
+	part.Anchored = true
+	part.CanCollide = false
+	part.CanTouch = false
+	part.Transparency = 1
+	local att0 = Instance.new("Attachment")
+	att0.Position = start
+	att0.Parent = part
+	local att1 = Instance.new("Attachment")
+	att1.Position = finish
+	att1.Parent = part
+	local beam = Instance.new("Beam")
+	beam.Attachment0 = att0
+	beam.Attachment1 = att1
+	beam.Color = ColorSequence.new(_color)
+	beam.FaceCamera = true
+	beam.Parent = part
+	
+	game.Debris:AddItem(part, _lifetime)
+	part.Parent = workspace
+end
+
+return module
+]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<UniqueId name="UniqueId">32e0a93482e2633604b794160000385c</UniqueId>
 				</Properties>
 			</Item>
 		</Item>
@@ -8545,7 +9751,6 @@ RETURN
 	interests <- how interested (or afraid) the NPC is in the directions around it
 ]]
 
--- TODO additional behaviors: Avoid
 local Behaviors = {}
 
 Behaviors.EPSILON = 1e-6 -- arbitrary small fudging number
@@ -8608,9 +9813,63 @@ end
 --	return interests
 --end
 
--- Seek predicted future position by solving for the best possible target interception (ignoring potential changes in velocity)
--- 		(The missile knows where it is because it knows where it isn't)
+-- Seek predicted future position using an iterative solver to find an approximate intercept point
+-- 		Less "optimal" than trigonometry, but feels better in practice
+--		May be safer than Behaviors.PursueTrig
 function Behaviors.Pursue(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
+	local interests = table.create(params.Resolution, 0)
+
+	ErrorIfNan(npcInfo, "npcInfo")
+	for _, thingInfo in thingInfos do
+		ErrorIfNan(thingInfo, "thingInfo")
+		
+		local differencePos = FlattenVector3(thingInfo.CFrame.Position - npcInfo.CFrame.Position)
+		
+		local distance = differencePos.Magnitude
+		if distance < params.RangeMin or distance > params.RangeMax then
+			continue
+		end
+		
+		local npcVelocityFlat = FlattenVector3(npcInfo.Velocity)
+		local thingVelocityFlat = FlattenVector3(thingInfo.Velocity)
+
+		local nextDifference: Vector3 = nil
+		local nextDistance: number = distance
+		for i = 1, 3 do
+			local nextT = nextDistance / (npcVelocityFlat.Magnitude + Behaviors.EPSILON)
+			local nextThingMovement = nextT * thingVelocityFlat
+			local nextPos = FlattenVector3(thingInfo.CFrame.Position + nextThingMovement)
+			nextDifference = FlattenVector3(nextPos - npcInfo.CFrame.Position)
+			nextDistance = nextDifference.Magnitude
+		end
+
+		-- Will sometimes look dumb, but prioritizing closest is good enough
+		local distanceFalloffDistance = math.max(distance - params.DistanceFalloffStart, 0)
+		local distanceFalloffRange = params.DistanceFalloffEnd - params.DistanceFalloffStart
+		local distanceInterestFraction = DistanceFalloff.Linear(distanceFalloffDistance, 1 / distanceFalloffRange)
+
+		local directionModifier = Vector3.new(params.DirectionModifierWeightRight, 0, -params.DirectionModifierWeightForward)
+		local desiredSlot = CalcDesiredSlot(nextDifference, directionModifier, params.Resolution)
+		
+		WriteNearbySlots(interests, desiredSlot, distanceInterestFraction, params.InterestMax, params.InterestConeArcDegrees)
+	end
+
+	return interests
+end
+
+-- Evade target's predicted future position using an iterative solver to move away from an approximate intercept point
+-- 		Less "optimal" than trigonometry, but feels better in practice
+--		May be safer than Behaviors.EvadeTrig
+function Behaviors.Evade(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
+	local paramsModified = BehaviorParams.NewGenericParams(params)
+	paramsModified.DirectionModifierWeightForward = -paramsModified.DirectionModifierWeightForward
+	paramsModified.DirectionModifierWeightRight = -paramsModified.DirectionModifierWeightRight
+
+	return Behaviors.Pursue(npcInfo, thingInfos, paramsModified)
+end
+
+-- Seek predicted future position by solving for the best possible target interception (ignoring potential changes in velocity)
+function Behaviors.PursueTrig(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
 	local interests = table.create(params.Resolution, 0)
 
 	ErrorIfNan(npcInfo, "npcInfo")
@@ -8652,7 +9911,6 @@ function Behaviors.Pursue(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {Inf
 			direction = SafeUnitVector3(thingVelocityFlat)
 			direction = direction.Magnitude > 0 and direction or differencePos
 		else
-			-- Dir -> To intercept point, interest -> inverse relation to intercept time/distance
 			local interceptPoint = thingInfo.CFrame.Position + distBC * SafeUnitVector3(vecBF) 
 			direction = FlattenVector3(interceptPoint - npcInfo.CFrame.Position)
 		end
@@ -8672,69 +9930,12 @@ function Behaviors.Pursue(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {Inf
 end
 
 -- Evade target's future position by moving away from the expected interception point (ignoring potential changes in velocity)
-function Behaviors.Evade(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
+function Behaviors.EvadeTrig(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
 	local paramsModified = BehaviorParams.NewGenericParams(params)
 	paramsModified.DirectionModifierWeightForward = -paramsModified.DirectionModifierWeightForward
 	paramsModified.DirectionModifierWeightRight = -paramsModified.DirectionModifierWeightRight
 
-	return Behaviors.Pursue(npcInfo, thingInfos, paramsModified)
-end
-
--- Seek predicted future position using an iterative solver to find an approximate intercept point
--- 		Less "optimal", but may feel nicer
---		May be safer than Behaviors.Pursue
-function Behaviors.PursueIterative(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
-	local interests = table.create(params.Resolution, 0)
-
-	ErrorIfNan(npcInfo, "npcInfo")
-	for _, thingInfo in thingInfos do
-		ErrorIfNan(thingInfo, "thingInfo")
-		
-		local differencePos = FlattenVector3(thingInfo.CFrame.Position - npcInfo.CFrame.Position)
-		
-		local distance = differencePos.Magnitude
-		if distance < params.RangeMin or distance > params.RangeMax then
-			continue
-		end
-		
-		local npcVelocityFlat = FlattenVector3(npcInfo.Velocity)
-		local thingVelocityFlat = FlattenVector3(thingInfo.Velocity)
-
-		local nextDifference: Vector3 = nil
-		local nextDistance: number = distance
-		for i = 1, 3 do
-			local nextT = nextDistance / (npcVelocityFlat.Magnitude + Behaviors.EPSILON)
-			local nextThingMovement = nextT * thingVelocityFlat
-			local nextPos = FlattenVector3(thingInfo.CFrame.Position + nextThingMovement)
-			nextDifference = FlattenVector3(nextPos - npcInfo.CFrame.Position)
-			nextDistance = nextDifference.Magnitude
-		end
-		
-		DebugDrawBeam(npcInfo.CFrame.Position, npcInfo.CFrame.Position + nextDifference)
-
-		-- Will sometimes look dumb, but prioritizing closest is good enough
-		local distanceFalloffDistance = math.max(distance - params.DistanceFalloffStart, 0)
-		local distanceFalloffRange = params.DistanceFalloffEnd - params.DistanceFalloffStart
-		local distanceInterestFraction = DistanceFalloff.Linear(distanceFalloffDistance, 1 / distanceFalloffRange)
-
-		local directionModifier = Vector3.new(params.DirectionModifierWeightRight, 0, -params.DirectionModifierWeightForward)
-		local desiredSlot = CalcDesiredSlot(nextDifference, directionModifier, params.Resolution)
-		
-		WriteNearbySlots(interests, desiredSlot, distanceInterestFraction, params.InterestMax, params.InterestConeArcDegrees)
-	end
-
-	return interests
-end
-
--- Evade target's predicted future position using an iterative solver to move away from an approximate intercept point
--- 		Less "optimal", but may feel nicer
---		May be safer than Behaviors.Pursue
-function Behaviors.EvadeIterative(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
-	local paramsModified = BehaviorParams.NewGenericParams(params)
-	paramsModified.DirectionModifierWeightForward = -paramsModified.DirectionModifierWeightForward
-	paramsModified.DirectionModifierWeightRight = -paramsModified.DirectionModifierWeightRight
-
-	return Behaviors.PursueIterative(npcInfo, thingInfos, paramsModified)
+	return Behaviors.PursueTrig(npcInfo, thingInfos, paramsModified)
 end
 
 function Behaviors.Avoid(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
@@ -9285,6 +10486,16 @@ export type CFrameAndVelocity = {
 	Velocity: Vector3,
 }
 
+export type PhysicalDescriptor = {
+	CFrame: CFrame,
+	Velocity: Vector3,
+	Acceleration: Vector3,
+	SpeedMax: number,
+	AccelerationMax: number,
+	Radius: number, -- always treated as a cylinder
+	Importance: number, -- TODO maybe keep + use in future to modify interest returns?
+}
+
 return nil
 ]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
@@ -9333,6 +10544,18 @@ bGUDAQ==]]></BinaryString>
 					<int64 name="SourceAssetId">-1</int64>
 					<BinaryString name="Tags"></BinaryString>
 					<UniqueId name="UniqueId">01b89c78d20fd8740478524700003d05</UniqueId>
+				</Properties>
+			</Item>
+			<Item class="Configuration" referent="RBX93DB081A0DA14DF7ADB800323E236C68">
+				<Properties>
+					<BinaryString name="AttributesSerialize"><![CDATA[BgAAAAsAAABBbHdheXNPblRvcAMABQAAAENvbG9yD0rq5D3r6mo/vVUjPwgAAABEcmF3VHlw
+ZQIDAAAAQm94BQAAAEdyb3VwAgAAAAAEAAAASWNvbgIlAAAAcmJ4YXNzZXQ6Ly90ZXh0dXJl
+cy9UYWdFZGl0b3IvVGFnLnBuZwcAAABWaXNpYmxlAwE=]]></BinaryString>
+					<UniqueId name="HistoryId">00000000000000000000000000000000</UniqueId>
+					<string name="Name">HomingProjectile</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<UniqueId name="UniqueId">32e0a93482e2633604b794160000494f</UniqueId>
 				</Properties>
 			</Item>
 		</Item>
