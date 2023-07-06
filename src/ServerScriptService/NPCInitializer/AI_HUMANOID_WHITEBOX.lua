@@ -57,7 +57,7 @@ function module.new(npc: Model)
 			-- )
 			table.insert(
 				interests, 
-				Behaviors.PursueIterative(
+				Behaviors.Pursue(
 					npcCFrameAndVelocity, 
 					InfoGetters.GetPlayerCFramesAndVelocities(),
 					BehaviorParams.NewGenericParams()

@@ -20,7 +20,6 @@ RETURN
 	interests <- how interested (or afraid) the NPC is in the directions around it
 ]]
 
--- TODO additional behaviors: Avoid
 local Behaviors = {}
 
 Behaviors.EPSILON = 1e-6 -- arbitrary small fudging number
@@ -83,9 +82,63 @@ end
 --	return interests
 --end
 
--- Seek predicted future position by solving for the best possible target interception (ignoring potential changes in velocity)
--- 		(The missile knows where it is because it knows where it isn't)
+-- Seek predicted future position using an iterative solver to find an approximate intercept point
+-- 		Less "optimal" than trigonometry, but feels better in practice
+--		May be safer than Behaviors.PursueTrig
 function Behaviors.Pursue(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
+	local interests = table.create(params.Resolution, 0)
+
+	ErrorIfNan(npcInfo, "npcInfo")
+	for _, thingInfo in thingInfos do
+		ErrorIfNan(thingInfo, "thingInfo")
+		
+		local differencePos = FlattenVector3(thingInfo.CFrame.Position - npcInfo.CFrame.Position)
+		
+		local distance = differencePos.Magnitude
+		if distance < params.RangeMin or distance > params.RangeMax then
+			continue
+		end
+		
+		local npcVelocityFlat = FlattenVector3(npcInfo.Velocity)
+		local thingVelocityFlat = FlattenVector3(thingInfo.Velocity)
+
+		local nextDifference: Vector3 = nil
+		local nextDistance: number = distance
+		for i = 1, 3 do
+			local nextT = nextDistance / (npcVelocityFlat.Magnitude + Behaviors.EPSILON)
+			local nextThingMovement = nextT * thingVelocityFlat
+			local nextPos = FlattenVector3(thingInfo.CFrame.Position + nextThingMovement)
+			nextDifference = FlattenVector3(nextPos - npcInfo.CFrame.Position)
+			nextDistance = nextDifference.Magnitude
+		end
+
+		-- Will sometimes look dumb, but prioritizing closest is good enough
+		local distanceFalloffDistance = math.max(distance - params.DistanceFalloffStart, 0)
+		local distanceFalloffRange = params.DistanceFalloffEnd - params.DistanceFalloffStart
+		local distanceInterestFraction = DistanceFalloff.Linear(distanceFalloffDistance, 1 / distanceFalloffRange)
+
+		local directionModifier = Vector3.new(params.DirectionModifierWeightRight, 0, -params.DirectionModifierWeightForward)
+		local desiredSlot = CalcDesiredSlot(nextDifference, directionModifier, params.Resolution)
+		
+		WriteNearbySlots(interests, desiredSlot, distanceInterestFraction, params.InterestMax, params.InterestConeArcDegrees)
+	end
+
+	return interests
+end
+
+-- Evade target's predicted future position using an iterative solver to move away from an approximate intercept point
+-- 		Less "optimal" than trigonometry, but feels better in practice
+--		May be safer than Behaviors.EvadeTrig
+function Behaviors.Evade(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
+	local paramsModified = BehaviorParams.NewGenericParams(params)
+	paramsModified.DirectionModifierWeightForward = -paramsModified.DirectionModifierWeightForward
+	paramsModified.DirectionModifierWeightRight = -paramsModified.DirectionModifierWeightRight
+
+	return Behaviors.Pursue(npcInfo, thingInfos, paramsModified)
+end
+
+-- Seek predicted future position by solving for the best possible target interception (ignoring potential changes in velocity)
+function Behaviors.PursueTrig(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
 	local interests = table.create(params.Resolution, 0)
 
 	ErrorIfNan(npcInfo, "npcInfo")
@@ -127,7 +180,6 @@ function Behaviors.Pursue(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {Inf
 			direction = SafeUnitVector3(thingVelocityFlat)
 			direction = direction.Magnitude > 0 and direction or differencePos
 		else
-			-- Dir -> To intercept point, interest -> inverse relation to intercept time/distance
 			local interceptPoint = thingInfo.CFrame.Position + distBC * SafeUnitVector3(vecBF) 
 			direction = FlattenVector3(interceptPoint - npcInfo.CFrame.Position)
 		end
@@ -147,69 +199,12 @@ function Behaviors.Pursue(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {Inf
 end
 
 -- Evade target's future position by moving away from the expected interception point (ignoring potential changes in velocity)
-function Behaviors.Evade(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
+function Behaviors.EvadeTrig(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
 	local paramsModified = BehaviorParams.NewGenericParams(params)
 	paramsModified.DirectionModifierWeightForward = -paramsModified.DirectionModifierWeightForward
 	paramsModified.DirectionModifierWeightRight = -paramsModified.DirectionModifierWeightRight
 
-	return Behaviors.Pursue(npcInfo, thingInfos, paramsModified)
-end
-
--- Seek predicted future position using an iterative solver to find an approximate intercept point
--- 		Less "optimal", but may feel nicer
---		May be safer than Behaviors.Pursue
-function Behaviors.PursueIterative(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
-	local interests = table.create(params.Resolution, 0)
-
-	ErrorIfNan(npcInfo, "npcInfo")
-	for _, thingInfo in thingInfos do
-		ErrorIfNan(thingInfo, "thingInfo")
-		
-		local differencePos = FlattenVector3(thingInfo.CFrame.Position - npcInfo.CFrame.Position)
-		
-		local distance = differencePos.Magnitude
-		if distance < params.RangeMin or distance > params.RangeMax then
-			continue
-		end
-		
-		local npcVelocityFlat = FlattenVector3(npcInfo.Velocity)
-		local thingVelocityFlat = FlattenVector3(thingInfo.Velocity)
-
-		local nextDifference: Vector3 = nil
-		local nextDistance: number = distance
-		for i = 1, 3 do
-			local nextT = nextDistance / (npcVelocityFlat.Magnitude + Behaviors.EPSILON)
-			local nextThingMovement = nextT * thingVelocityFlat
-			local nextPos = FlattenVector3(thingInfo.CFrame.Position + nextThingMovement)
-			nextDifference = FlattenVector3(nextPos - npcInfo.CFrame.Position)
-			nextDistance = nextDifference.Magnitude
-		end
-		
-		DebugDrawBeam(npcInfo.CFrame.Position, npcInfo.CFrame.Position + nextDifference)
-
-		-- Will sometimes look dumb, but prioritizing closest is good enough
-		local distanceFalloffDistance = math.max(distance - params.DistanceFalloffStart, 0)
-		local distanceFalloffRange = params.DistanceFalloffEnd - params.DistanceFalloffStart
-		local distanceInterestFraction = DistanceFalloff.Linear(distanceFalloffDistance, 1 / distanceFalloffRange)
-
-		local directionModifier = Vector3.new(params.DirectionModifierWeightRight, 0, -params.DirectionModifierWeightForward)
-		local desiredSlot = CalcDesiredSlot(nextDifference, directionModifier, params.Resolution)
-		
-		WriteNearbySlots(interests, desiredSlot, distanceInterestFraction, params.InterestMax, params.InterestConeArcDegrees)
-	end
-
-	return interests
-end
-
--- Evade target's predicted future position using an iterative solver to move away from an approximate intercept point
--- 		Less "optimal", but may feel nicer
---		May be safer than Behaviors.Pursue
-function Behaviors.EvadeIterative(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
-	local paramsModified = BehaviorParams.NewGenericParams(params)
-	paramsModified.DirectionModifierWeightForward = -paramsModified.DirectionModifierWeightForward
-	paramsModified.DirectionModifierWeightRight = -paramsModified.DirectionModifierWeightRight
-
-	return Behaviors.PursueIterative(npcInfo, thingInfos, paramsModified)
+	return Behaviors.PursueTrig(npcInfo, thingInfos, paramsModified)
 end
 
 function Behaviors.Avoid(npcInfo: InfoTypes.CFrameAndVelocity, thingInfos: {InfoTypes.CFrameAndVelocity}, params: BehaviorParams.GenericParams): {number}
